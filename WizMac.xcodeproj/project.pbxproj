@@ -1,0 +1,376 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 44;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		070861120DB1E8B80062D875 /* QueueController.m in Sources */ = {isa = PBXBuildFile; fileRef = 070861110DB1E8B80062D875 /* QueueController.m */; };
+		070861330DB1EA2C0062D875 /* SubviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 070861300DB1EA2C0062D875 /* SubviewTableViewCell.m */; };
+		070861340DB1EA2C0062D875 /* SubviewTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 070861320DB1EA2C0062D875 /* SubviewTableViewController.m */; };
+		070865060DB7614F0062D875 /* WizDLQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 070865050DB7614F0062D875 /* WizDLQueue.m */; };
+		070866570DB8C1B60062D875 /* action_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 070866560DB8C1B60062D875 /* action_refresh.png */; };
+		0708667E0DB8C9340062D875 /* action_pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 0708667D0DB8C9340062D875 /* action_pause.png */; };
+		070866810DB8CB920062D875 /* QueuedSubview.nib in Resources */ = {isa = PBXBuildFile; fileRef = 070866800DB8CB920062D875 /* QueuedSubview.nib */; };
+		0708668B0DB8CCAA0062D875 /* QueuedSubviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0708668A0DB8CCAA0062D875 /* QueuedSubviewController.m */; };
+		070867870DBB15B50062D875 /* WizFileDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 070867860DBB15B50062D875 /* WizFileDownload.m */; };
+		074320A80D99105C00BC3C6A /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 074320A70D99105C00BC3C6A /* AppController.m */; };
+		074320BD0D9BA86400BC3C6A /* WizFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 074320BC0D9BA86400BC3C6A /* WizFile.m */; };
+		074321000D9DDB7A00BC3C6A /* WizIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 074320FF0D9DDB7A00BC3C6A /* WizIndex.m */; };
+		0764D5F50DDB0D9C004C5AEF /* action_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 0764D5F40DDB0D9C004C5AEF /* action_stop.png */; };
+		07C4A4180DAF82E9006901D5 /* DownloadSubview.nib in Resources */ = {isa = PBXBuildFile; fileRef = 07C4A4170DAF82E9006901D5 /* DownloadSubview.nib */; };
+		07C4A41E0DAF8CF0006901D5 /* DLSubviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C4A41D0DAF8CF0006901D5 /* DLSubviewController.m */; };
+		07DD94030D9E206000FFFDDA /* WizConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DD94020D9E206000FFFDDA /* WizConnect.m */; };
+		07DD94900D9F99EE00FFFDDA /* WizConnectDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DD948F0D9F99EE00FFFDDA /* WizConnectDownload.m */; };
+		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		070861100DB1E8B80062D875 /* QueueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueController.h; sourceTree = "<group>"; };
+		070861110DB1E8B80062D875 /* QueueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueueController.m; sourceTree = "<group>"; };
+		0708612F0DB1EA2C0062D875 /* SubviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubviewTableViewCell.h; sourceTree = "<group>"; };
+		070861300DB1EA2C0062D875 /* SubviewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubviewTableViewCell.m; sourceTree = "<group>"; };
+		070861310DB1EA2C0062D875 /* SubviewTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubviewTableViewController.h; sourceTree = "<group>"; };
+		070861320DB1EA2C0062D875 /* SubviewTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubviewTableViewController.m; sourceTree = "<group>"; };
+		070865040DB7614F0062D875 /* WizDLQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizDLQueue.h; sourceTree = "<group>"; };
+		070865050DB7614F0062D875 /* WizDLQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizDLQueue.m; sourceTree = "<group>"; };
+		070866560DB8C1B60062D875 /* action_refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = action_refresh.png; path = gfx/action_refresh.png; sourceTree = "<group>"; };
+		0708667D0DB8C9340062D875 /* action_pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = action_pause.png; path = gfx/action_pause.png; sourceTree = "<group>"; };
+		070866800DB8CB920062D875 /* QueuedSubview.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = QueuedSubview.nib; sourceTree = "<group>"; };
+		070866890DB8CCAA0062D875 /* QueuedSubviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueuedSubviewController.h; sourceTree = "<group>"; };
+		0708668A0DB8CCAA0062D875 /* QueuedSubviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueuedSubviewController.m; sourceTree = "<group>"; };
+		070867850DBB15B50062D875 /* WizFileDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizFileDownload.h; sourceTree = "<group>"; };
+		070867860DBB15B50062D875 /* WizFileDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizFileDownload.m; sourceTree = "<group>"; };
+		074320A60D99105C00BC3C6A /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
+		074320A70D99105C00BC3C6A /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
+		074320BB0D9BA86400BC3C6A /* WizFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizFile.h; sourceTree = "<group>"; };
+		074320BC0D9BA86400BC3C6A /* WizFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizFile.m; sourceTree = "<group>"; };
+		074320FE0D9DDB7A00BC3C6A /* WizIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizIndex.h; sourceTree = "<group>"; };
+		074320FF0D9DDB7A00BC3C6A /* WizIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizIndex.m; sourceTree = "<group>"; };
+		0764D5F40DDB0D9C004C5AEF /* action_stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = action_stop.png; path = gfx/action_stop.png; sourceTree = "<group>"; };
+		07C4A4170DAF82E9006901D5 /* DownloadSubview.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = DownloadSubview.nib; sourceTree = "<group>"; };
+		07C4A41C0DAF8CF0006901D5 /* DLSubviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLSubviewController.h; sourceTree = "<group>"; };
+		07C4A41D0DAF8CF0006901D5 /* DLSubviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLSubviewController.m; sourceTree = "<group>"; };
+		07DD94010D9E206000FFFDDA /* WizConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizConnect.h; sourceTree = "<group>"; };
+		07DD94020D9E206000FFFDDA /* WizConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizConnect.m; sourceTree = "<group>"; };
+		07DD948E0D9F99EE00FFFDDA /* WizConnectDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizConnectDownload.h; sourceTree = "<group>"; };
+		07DD948F0D9F99EE00FFFDDA /* WizConnectDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizConnectDownload.m; sourceTree = "<group>"; };
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* WizMac_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizMac_Prefix.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* WizMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WizMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		070866320DB8B5550062D875 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				0764D5F40DDB0D9C004C5AEF /* action_stop.png */,
+				0708667D0DB8C9340062D875 /* action_pause.png */,
+				070866560DB8C1B60062D875 /* action_refresh.png */,
+			);
+			name = Icons;
+			sourceTree = "<group>";
+		};
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0708612F0DB1EA2C0062D875 /* SubviewTableViewCell.h */,
+				070861300DB1EA2C0062D875 /* SubviewTableViewCell.m */,
+				070861310DB1EA2C0062D875 /* SubviewTableViewController.h */,
+				070861320DB1EA2C0062D875 /* SubviewTableViewController.m */,
+				070861100DB1E8B80062D875 /* QueueController.h */,
+				070861110DB1E8B80062D875 /* QueueController.m */,
+				07C4A41C0DAF8CF0006901D5 /* DLSubviewController.h */,
+				07C4A41D0DAF8CF0006901D5 /* DLSubviewController.m */,
+				070866890DB8CCAA0062D875 /* QueuedSubviewController.h */,
+				0708668A0DB8CCAA0062D875 /* QueuedSubviewController.m */,
+				074320A60D99105C00BC3C6A /* AppController.h */,
+				074320A70D99105C00BC3C6A /* AppController.m */,
+				074320BB0D9BA86400BC3C6A /* WizFile.h */,
+				074320BC0D9BA86400BC3C6A /* WizFile.m */,
+				070867850DBB15B50062D875 /* WizFileDownload.h */,
+				070867860DBB15B50062D875 /* WizFileDownload.m */,
+				074320FE0D9DDB7A00BC3C6A /* WizIndex.h */,
+				074320FF0D9DDB7A00BC3C6A /* WizIndex.m */,
+				07DD94010D9E206000FFFDDA /* WizConnect.h */,
+				07DD94020D9E206000FFFDDA /* WizConnect.m */,
+				07DD948E0D9F99EE00FFFDDA /* WizConnectDownload.h */,
+				07DD948F0D9F99EE00FFFDDA /* WizConnectDownload.m */,
+				070865040DB7614F0062D875 /* WizDLQueue.h */,
+				070865050DB7614F0062D875 /* WizDLQueue.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* WizMac.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* WizMac */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = WizMac;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* WizMac_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				070866320DB8B5550062D875 /* Icons */,
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+				070866800DB8CB920062D875 /* QueuedSubview.nib */,
+				07C4A4170DAF82E9006901D5 /* DownloadSubview.nib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* WizMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "WizMac" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WizMac;
+			productInstallPath = "$(HOME)/Applications";
+			productName = WizMac;
+			productReference = 8D1107320486CEB800E47090 /* WizMac.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "WizMac" */;
+			compatibilityVersion = "Xcode 3.0";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* WizMac */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* WizMac */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				07C4A4180DAF82E9006901D5 /* DownloadSubview.nib in Resources */,
+				070866570DB8C1B60062D875 /* action_refresh.png in Resources */,
+				0708667E0DB8C9340062D875 /* action_pause.png in Resources */,
+				070866810DB8CB920062D875 /* QueuedSubview.nib in Resources */,
+				0764D5F50DDB0D9C004C5AEF /* action_stop.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				074320A80D99105C00BC3C6A /* AppController.m in Sources */,
+				074320BD0D9BA86400BC3C6A /* WizFile.m in Sources */,
+				074321000D9DDB7A00BC3C6A /* WizIndex.m in Sources */,
+				07DD94030D9E206000FFFDDA /* WizConnect.m in Sources */,
+				07DD94900D9F99EE00FFFDDA /* WizConnectDownload.m in Sources */,
+				07C4A41E0DAF8CF0006901D5 /* DLSubviewController.m in Sources */,
+				070861120DB1E8B80062D875 /* QueueController.m in Sources */,
+				070861330DB1EA2C0062D875 /* SubviewTableViewCell.m in Sources */,
+				070861340DB1EA2C0062D875 /* SubviewTableViewController.m in Sources */,
+				070865060DB7614F0062D875 /* WizDLQueue.m in Sources */,
+				0708668B0DB8CCAA0062D875 /* QueuedSubviewController.m in Sources */,
+				070867870DBB15B50062D875 /* WizFileDownload.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29B97319FDCFA39411CA2CEA /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WizMac_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = WizMac;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WizMac_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = WizMac;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "WizMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "WizMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

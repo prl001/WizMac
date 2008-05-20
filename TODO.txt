@@ -1,0 +1,15 @@
+Resume from .part directory dialog
+Add size and duration of download to complete infoLabel
+Add new connection sheet.
+Add toolbar.
+Fix window resizing.
+Add config
+-download path
+-download style. eg (wiz or ts)
+Create WizMac icon
+add show in finder. Either via control-click menu or via file icon in subview.
+Add host upnp auto discovery.
+Add filesize column to main filelist table.
+Handle connection errors. Gracefull error, retries, resume from error.
+shift-download to add selected files in reverse order.
+

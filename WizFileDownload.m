@@ -159,7 +159,8 @@
 	[trunc retain];
 
 	truncPath = [NSString stringWithFormat: @"%@/trunc", [WizConnect urlEncode: [wizFile remotePath]]];
-NSLog(truncPath);
+
+NSLog(@"truncPath = %@", truncPath);
 
 	wizDownload = [[wizFile wizConnect] getFileAsynchronouslyWithPath: truncPath data: trunc delegate: self];
 
@@ -340,24 +341,25 @@ NSLog(truncPath);
 	[delegate downloadWasResumed: self];
 }
 
--(void)downloadDidReceiveBytes: (int) num_bytes
+//WizConnectDownloadProtocol delegates
+-(void)wizDownload: (WizConnectDownload *) download didReceiveBytes: (int) numBytes
 {
-	bytesDownloaded += num_bytes;
+	bytesDownloaded += numBytes;
 	return;
 }
 
--(void)downloadOfData: (NSMutableData *) data didFailWithError: (NSError *) error
+-(void)wizDownload: (WizConnectDownload *) download didFailWithError: (NSError *) error
 {
 	//FIXME handle errors.
 	NSLog(@"ERROR Downloading file!");
 	wizDownload = nil;
 }
 
--(void)downloadDidFinishLoading: (NSMutableData *) data
+-(void)wizDownloadDidFinishLoading: (WizConnectDownload *) download
 {
 	wizDownload = nil;
 	NSLog(@"Bytes Downloaded = %llu", bytesDownloaded);
-	if(data == trunc)
+	if([download data] == trunc)
 	{
 		[self downloadTS];
 	}

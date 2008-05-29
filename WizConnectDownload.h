@@ -23,11 +23,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@protocol WizConnectDownloadDelegate
--(void)downloadOfData: (NSMutableData *) data didFailWithError: (NSError *) error;
--(void)downloadDidFinishLoading: (NSMutableData *) data;
-@end
-
 @interface WizConnectDownload : NSObject {
 NSString *url_str;
 NSURLConnection *con;
@@ -40,6 +35,8 @@ bool stopDownloading;
 -(id) initWithURLString: (NSString *) urlString data: (NSMutableData *) d maxLength: (int) maxLength delegate: (id) del;
 -(id) initWithURLString: (NSString *) urlString localFile: (NSFileHandle *) f startOffset: (int) startOffset maxLength: (int) maxLength delegate: (id) del;
 
+- (NSMutableData *) data;
+
 - (void) cancel;
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
@@ -47,6 +44,12 @@ bool stopDownloading;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 
--(void)dealloc;
+- (void)dealloc;
 
+@end
+
+@protocol WizConnectDownloadDelegate
+-(void)wizDownload: (WizConnectDownload *) download didReceiveBytes: (int) numBytes;
+-(void)wizDownload: (WizConnectDownload *) download didFailWithError: (NSError *) error;
+-(void)wizDownloadDidFinishLoading: (WizConnectDownload *) download;
 @end

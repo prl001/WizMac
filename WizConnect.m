@@ -105,14 +105,18 @@
 -(NSData *) getFileSynchronouslyWithPath: (NSString *) path
 {
 	NSString *url_str;
-	NSData *data;
+	NSData *data = nil;
 	NSURLResponse *resp;
 	NSError *err;
-	
+	NSMutableURLRequest *request;
 	url_str = [self getURLString: path];
 	NSLog(url_str);
 
-	data = [NSURLConnection sendSynchronousRequest:[NSURLRequest  requestWithURL: [NSURL URLWithString: url_str] ] returningResponse: &resp error: &err];
+	request = [NSMutableURLRequest  requestWithURL: [NSURL URLWithString: url_str]];
+	[request setTimeoutInterval: 30];
+
+	if([NSURLConnection canHandleRequest: request] == YES)
+		data = [NSURLConnection sendSynchronousRequest: request returningResponse: &resp error: &err];
 
 	return data;
 }

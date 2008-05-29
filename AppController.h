@@ -29,7 +29,6 @@
 #import "QueueController.h"
 
 @interface AppController : NSObject <WizIndexDelegate> {
-IBOutlet NSTextField *label;
 IBOutlet NSTextField *host;
 IBOutlet NSTextField *port;
 IBOutlet NSTableView *table;
@@ -38,7 +37,6 @@ IBOutlet NSTextField *statusLabel;
 IBOutlet NSWindow *window;
 IBOutlet QueueController *queueController;
 
-int clickCount;
 WizIndex *index;
 WizDLQueue *dlQueue;
 
@@ -50,5 +48,8 @@ WizDLQueue *dlQueue;
 //WizIndex delegate methods
 -(void) indexUpdated;
 -(void) indexHasFinishedUpdating;
+
+//NSAlert selector
+- (void) alertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 
 @end

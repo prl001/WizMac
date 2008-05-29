@@ -19,18 +19,16 @@ SubviewTableViewController.
 *****************************************************************************/
 
 #import <Foundation/Foundation.h>
+#import "WizDLQueue.h"
 #import "WizFileDownload.h"
 #import "SubviewTableViewController.h"
 
-@interface QueueController : NSObject < SubviewTableViewControllerDataSourceProtocol >
+@interface QueueController : NSObject < SubviewTableViewControllerDataSourceProtocol,WizDLQueueDelegate >
 {
     @private
     
     IBOutlet NSTableView *subviewTableView;
     NSTableColumn *subviewTableColumn;
-    IBOutlet NSButton *addRowButton;
-    IBOutlet NSButton *removeRowButton;
-    IBOutlet NSButton *toggleAnimationButton;
     
     SubviewTableViewController *tableViewController;
     NSMutableArray *subviewControllers;
@@ -41,7 +39,5 @@ SubviewTableViewController.
 - (void) removeRow:(WizFileDownload *) f;
 
 -(unsigned int) findWizFileIndex: (WizFileDownload *)file;
-
-- (IBAction) toggleAnimation:(id) sender;
 
 @end

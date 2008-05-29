@@ -25,12 +25,6 @@
     return subviewControllers;
 }
 
-- (void) validateButtons
-{
-    [removeRowButton setEnabled: ([subviewTableView numberOfSelectedRows] > 0)];
-    [toggleAnimationButton setEnabled: ([subviewTableView numberOfSelectedRows] > 0)];
-}
-
 - (void) awakeFromNib
 {
 	NSArray *a = [subviewTableView tableColumns];
@@ -46,7 +40,7 @@
     NSLog(@"datasource = %@", [subviewTableView dataSource]);
 	NSLog(@"delegate = %@", [subviewTableView delegate]);
     // Make sure that the buttons have the right state
-    [self validateButtons];
+    //[self validateButtons];
 }
 
 - (void) dealloc
@@ -105,17 +99,6 @@
 	return [wizFiles indexOfObject: file];
 }
 
-- (IBAction) toggleAnimation:(id) sender
-{
-    NSIndexSet *selectedRows = [subviewTableView selectedRowIndexes];
-    unsigned int index = [selectedRows firstIndex];
-    while (index != NSNotFound)
-    {
-        [[[self subviewControllers] objectAtIndex: index] toggleAnimation: nil];
-        index = [selectedRows indexGreaterThanIndex: index];
-    }
-}
-
 // Methods from SubviewTableViewControllerDataSourceProtocol
 
 - (NSView *) tableView:(NSTableView *) tableView viewForRow:(int) row
@@ -127,7 +110,7 @@
 
 - (void) tableViewSelectionDidChange:(NSNotification *) notification
 {
-    [self validateButtons];
+    //[self validateButtons];
 }
 
 // Methods from NSTableDataSource protocol

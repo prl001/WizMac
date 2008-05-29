@@ -29,6 +29,7 @@
 @protocol WizIndexDelegate
 -(void) indexUpdated;
 -(void) indexHasFinishedUpdating;
+-(void) indexUpdateFailedWithError: (NSError *) error;
 @end
 
 @interface WizIndex : NSObject <WizConnectDownloadDelegate> {
@@ -37,8 +38,10 @@ NSMutableArray *wizFiles;
 int curLoadIndex;
 WizConnect *wizConnect;
 
-NSMutableArray *header;
-NSMutableArray *trunc;
+
+NSMutableData *index_data;
+NSMutableData *header;
+NSMutableData *trunc;
 
 id delegate;
 }
@@ -48,17 +51,17 @@ id delegate;
 -(NSArray *)getWizFiles;
 -(NSArray *)getWizFilesFromIndexSet: (NSIndexSet *)indexSet;
 -(WizFile *)getWizFileAtIndex: (int) i;
--(void) downloadFileAtRow: (int) row;
 
--(void) getIndex;
+-(BOOL) getIndex;
 
+-(void) loadIndexData;
 -(void) loadNextWizFile;
 -(void) loadTrunc;
 
 // WizConnectDownloadDelegate
--(void)downloadDidReceiveBytes: (int) num_bytes;
--(void)downloadOfData: (NSMutableData *) data didFailWithError: (NSError *) error;
--(void)downloadDidFinishLoading: (NSMutableData *) data;
+-(void)wizDownload: (WizConnectDownload *) download didReceiveBytes: (int) numBytes;
+-(void)wizDownload: (WizConnectDownload *) download didFailWithError: (NSError *) error;
+-(void)wizDownloadDidFinishLoading: (WizConnectDownload *) download;
 
 // NSTableDataSource
 - (int)numberOfRowsInTableView:(NSTableView *)tableView;

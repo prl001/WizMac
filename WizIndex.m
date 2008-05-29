@@ -63,16 +63,18 @@
 	return [wizFiles objectAtIndex: i];
 }
 
--(void) downloadFileAtRow: (int) row
+-(BOOL) getIndex
 {
-	WizFile *file = [wizFiles objectAtIndex: row];
-	[file downloadWithDelegate: self];
+	index_data = [NSMutableData dataWithLength: 2048];
+	[index_data retain];
+	
+	[wizConnect getFileAsynchronouslyWithPath: @"index.txt" data: index_data delegate: self];
+
+	return true;
 }
 
--(void) getIndex
+-(void) loadIndexData
 {
-	NSData *index_data;
-
 	NSArray *lines;
 	NSString *line;
 	int s, e;
@@ -80,7 +82,6 @@
 	NSRange range;
 	NSString *index_str;
 
-	index_data = [wizConnect getFileSynchronouslyWithPath: @"index.txt"];
 	if(index_data != nil)
 	{
 		index_str = [[NSString alloc] initWithData: index_data encoding: NSASCIIStringEncoding];
@@ -121,8 +122,13 @@
 	}
 	else
 	{
-		NSLog(@"error: print error here.");
+		NSLog(@"error: downloading index!");
+		return;
 	}
+
+	[index_data release];
+
+	return;
 }
 
 -(void) loadNextWizFile
@@ -163,29 +169,29 @@
 
 }
 
--(void)downloadDidReceiveBytes: (int) num_bytes
+-(void)wizDownload: (WizConnectDownload *) download didReceiveBytes: (int) numBytes
 {
 	return;
 }
 
--(void)downloadOfData: (NSMutableData *) data didFailWithError: (NSError *) error
+-(void)wizDownload: (WizConnectDownload *) download didFailWithError: (NSError *) error
 {
-	//FIXME handle errors.
-
-	curLoadIndex++;
-	
-	if(curLoadIndex < [filenames count])
-	{
-		[self loadNextWizFile];
-	}
-
+	[index_data release];
+	index_data = nil;
+	[delegate indexUpdateFailedWithError: error];
 }
 
--(void)downloadDidFinishLoading: (NSMutableData *) data
+-(void)wizDownloadDidFinishLoading: (WizConnectDownload *) download
 {
+	NSMutableData *data = [download data];
+
 	if(data == header)
 	{
 		[self loadTrunc];
+	}
+	else  if(data == index_data)
+	{
+		[self loadIndexData];
 	}
 	else //data == trunc
 	{

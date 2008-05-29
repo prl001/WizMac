@@ -26,7 +26,6 @@
 @implementation AppController
 - (id) init {
 	self = [super init];
-	clickCount = 0;
 	index = [[WizIndex alloc] initWithDelegate: self];
 	[index retain];
 	return self;
@@ -43,29 +42,31 @@
 
 - (IBAction)connectToWiz:(id)sender {
 	WizConnect *wizConnect;
-	
-	[label setStringValue: [NSString stringWithFormat: @"Click count = %d", clickCount]];
-	clickCount++;
 
 	wizConnect = [[WizConnect alloc] initWithHost: [host stringValue] port: [port intValue]];
 
 	[window setTitle: [NSString stringWithFormat: @"WizMac (%@:%d)", [wizConnect host], [wizConnect port]]];
 
 	[index setWizConnect: wizConnect];
-	[index getIndex];
-	[statusLabel setStringValue: @"Retrieving file list."];
-	[statusLabel setHidden: false];
-	[spinner setHidden: false];
-	[spinner startAnimation: self];
+	if([index getIndex] == TRUE)
+	{
+		[statusLabel setStringValue: @"Retrieving file list."];
+		[statusLabel setHidden: false];
+		[spinner setHidden: false];
+		[spinner startAnimation: self];
+	}
+	else
+	{
+		[statusLabel setStringValue: @"Error connecting to host."];
+		[statusLabel setHidden: false];
+		[spinner setHidden: false];
+	}
 }
 
 - (IBAction)downloadFile:(id)sender
 {
-	//[index downloadFileAtRow: [table selectedRow]];
 	[dlQueue addWizFiles: [index getWizFilesFromIndexSet: [table selectedRowIndexes]]];
 	[table deselectAll: self];
-
-	//[queueController addRow: [index getWizFileAtIndex: [table selectedRow]]];
 }
 
 //WizIndex delegate methods
@@ -74,11 +75,26 @@
 	[table reloadData];
 }
 
+-(void) indexUpdateFailedWithError: (NSError *) error
+{
+	NSAlert *alert = [NSAlert alertWithMessageText: @"Error Connecting" defaultButton: @"Ok" alternateButton: nil otherButton: nil informativeTextWithFormat: @"Error: %@", @"Time Out!"];
+	[statusLabel setHidden: true];
+	[spinner setHidden: true];
+	[spinner stopAnimation: self];
+			
+	[alert beginSheetModalForWindow: window modalDelegate: self didEndSelector: @selector(alertDidEnd:returnCode:contextInfo:)  contextInfo: nil];
+}
 
 -(void) indexHasFinishedUpdating
 {
 	[statusLabel setHidden: true];
 	[spinner stopAnimation: self];
+}
+
+//NSAlert selector
+- (void) alertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
+{
+	return;
 }
 
 @end

@@ -26,6 +26,12 @@
 #import "WizFile.h"
 #import "WizFileDownload.h"
 
+@protocol WizDLQueueDelegate
+-(void) addRow:(WizFileDownload *) f;
+-(void) updateRow:(WizFileDownload *) f;
+-(void) removeRow:(WizFileDownload *) f;
+@end
+
 @interface WizDLQueue : NSObject {
 
 id delegate;

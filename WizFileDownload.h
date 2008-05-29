@@ -92,9 +92,9 @@ typedef struct
 -(void) resumeDownload;
 
 // WizConnectDownloadDelegate
--(void)downloadDidReceiveBytes: (int) num_bytes;
--(void)downloadOfData: (NSMutableData *) data didFailWithError: (NSError *) error;
--(void)downloadDidFinishLoading: (NSMutableData *) data;
+-(void)wizDownload: (WizConnectDownload *) download didReceiveBytes: (int) numBytes;
+-(void)wizDownload: (WizConnectDownload *) download didFailWithError: (NSError *) error;
+-(void)wizDownloadDidFinishLoading: (WizConnectDownload *) download;
 
 @end
 

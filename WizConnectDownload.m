@@ -38,17 +38,22 @@
 
 	NSMutableURLRequest *request = [NSMutableURLRequest  requestWithURL: [NSURL URLWithString: urlString]
 		cachePolicy: NSURLRequestReloadIgnoringCacheData //NSURLRequestReloadIgnoringLocalAndRemoteCacheData 10.5
-		timeoutInterval:60.0];
+		timeoutInterval: 20.0];
 	if(maxLength != 0)
 	{
 		[request setValue: [NSString stringWithFormat: @"bytes=%d-%d", startOffset, startOffset + maxLength-1] forHTTPHeaderField: @"Range"];
 		NSLog(@"Partial Download. bytes=%d-%d %d", startOffset, startOffset + maxLength-1, maxLength);
 	}
 	
+	[request setTimeoutInterval: 20.0];
+	
 	con = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	[con retain];
 
 	stopDownloading = NO;
+
+	file = nil;
+	data = nil;
 
 	[self retain];
 
@@ -58,8 +63,6 @@
 -(id) initWithURLString: (NSString *) urlString data: (NSMutableData *) d maxLength: (int) maxLength delegate: (id) del
 {
 	self = [self initWithURLString: urlString startOffset: 0 maxLength: maxLength delegate: del];
-
-	file = nil;
 
 	data = d;
 	[data retain];
@@ -71,12 +74,15 @@
 {
 	self = [self initWithURLString: urlString startOffset: startOffset maxLength: maxLength delegate: del];
 
-	data = nil;
-
 	file = f;
 	[file retain];
 
 	return self;
+}
+
+- (NSMutableData *) data
+{
+	return data;
 }
 
 - (void) cancel
@@ -110,7 +116,7 @@
 	else
 		[data appendData:d];
 	
-	[delegate downloadDidReceiveBytes: [d length]];
+	[delegate wizDownload: self didReceiveBytes: [d length]];
 	
 	 return; 
 }
@@ -121,8 +127,8 @@
     NSLog(@"Connection failed! Error - %@ %@",
           [error localizedDescription],
           [[error userInfo] objectForKey:NSErrorFailingURLStringKey]);
-
-	[delegate downloadOfData: data didFailWithError: error];
+	
+	[delegate wizDownload: self didFailWithError: error];
 	[self release];
 }
 
@@ -133,7 +139,7 @@
 	else
 		NSLog(@"Succeeded!");
 
-	[delegate downloadDidFinishLoading: data];
+	[delegate wizDownloadDidFinishLoading: self];
     [self release];
 }
 

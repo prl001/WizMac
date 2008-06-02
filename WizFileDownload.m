@@ -144,11 +144,8 @@
 
 -(void) downloadWithDownloadPath: (NSString *) aPath 
 {
-	NSString *truncPath;
 	if([self isDownloading] == YES)
 		return;
-
-
 
 	status = WizFileDownload_InProgress;
 
@@ -158,7 +155,14 @@
 	trunc = [NSMutableData dataWithLength: 4028];
 	[trunc retain];
 
-	truncPath = [NSString stringWithFormat: @"%@/trunc", [WizConnect urlEncode: [wizFile remotePath]]];
+	[self downloadTrunc];
+
+	return;
+}
+
+-(void) downloadTrunc
+{
+	NSString *truncPath = [NSString stringWithFormat: @"%@/trunc", [WizConnect urlEncode: [wizFile remotePath]]];
 
 NSLog(@"truncPath = %@", truncPath);
 
@@ -191,6 +195,7 @@ NSLog(@"truncPath = %@", truncPath);
 	if([fm fileExistsAtPath: datafile] == NO)
 	{
 		//make sure file exists
+		//FIXME find a better way to make an empty file.
 		FILE *f = fopen([datafile cString], "w");
 		fclose(f);
 	}
@@ -204,16 +209,26 @@ NSLog(@"truncPath = %@", truncPath);
 
 	downloadStartDate = [NSDate date];
 
-	NSDictionary * fileAttributes = [fm fileAttributesAtPath:datafile traverseLink:NO];
-	NSNumber *dataFileSize = [fileAttributes objectForKey: NSFileSize];
-	if([dataFileSize unsignedLongLongValue] > 0)
+	[self downloadSelectChunk];
+
+	[self startDLRateCalc];
+		
+}
+
+-(void) downloadSelectChunk
+{
+	unsigned long long dataFileSize = [tsFile seekToEndOfFile];
+	if(dataFileSize == [wizFile filesize])
 	{
-		[self downloadPartialChunk: [dataFileSize unsignedLongLongValue]];
+		return [self finishDownload];
+	}
+	
+	if(dataFileSize > 0)
+	{
+		[self downloadPartialChunk: dataFileSize];
 	}
 	else
 		[self downloadNextChunk];
-
-	[self startDLRateCalc];
 
 	return;
 }
@@ -309,7 +324,8 @@ NSLog(@"truncPath = %@", truncPath);
 -(void) cancelDownload
 {
 	//stop download.
-	[wizDownload cancel];
+	if(wizDownload != nil)
+		[wizDownload cancel];
 	wizDownload = nil;
 	
 	status = WizFileDownload_Cancelled;
@@ -341,6 +357,21 @@ NSLog(@"truncPath = %@", truncPath);
 	[delegate downloadWasResumed: self];
 }
 
+-(void) retryDownloadAfterError
+{
+	if(tsFile == nil)
+	{
+		[self downloadTrunc];
+	}
+	else
+	{
+		[self downloadSelectChunk];
+	}
+	
+	return;
+
+}
+
 //WizConnectDownloadProtocol delegates
 -(void)wizDownload: (WizConnectDownload *) download didReceiveBytes: (int) numBytes
 {
@@ -353,6 +384,7 @@ NSLog(@"truncPath = %@", truncPath);
 	//FIXME handle errors.
 	NSLog(@"ERROR Downloading file!");
 	wizDownload = nil;
+	[delegate downloadFailed: self withError: error];
 }
 
 -(void)wizDownloadDidFinishLoading: (WizConnectDownload *) download

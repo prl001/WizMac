@@ -43,7 +43,7 @@
 			
 		switch([wizFileDownload status])
 		{
-			case WizFileDownload_Complete : [infoLabel setStringValue: [NSString stringWithFormat: @"Downloaded %@",[wizFileDownload bytesDownloadedString]]]; break;
+			case WizFileDownload_Complete : [infoLabel setStringValue: [NSString stringWithFormat: @"Done - Downloaded %@",[wizFileDownload bytesDownloadedString]]]; break;
 			case WizFileDownload_Queued : [infoLabel setStringValue: @"Queued"]; break;
 		}
 	}

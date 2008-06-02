@@ -127,6 +127,13 @@
 	[self startNextDownload];
 }
 
+-(void) downloadFailed: (WizFileDownload *) file withError: (NSError *) error
+{
+	//FIXME should we have a retry count and max retry limit?
+	
+	[file retryDownloadAfterError]; //FIXME do we need to wait here for a period before retrying?
+}
+
 -(void) downloadWasPaused: (WizFileDownload *) file
 {
 	//[self removeWizFile: file];

@@ -24,6 +24,7 @@
 		07C4A41E0DAF8CF0006901D5 /* DLSubviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C4A41D0DAF8CF0006901D5 /* DLSubviewController.m */; };
 		07DD94030D9E206000FFFDDA /* WizConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DD94020D9E206000FFFDDA /* WizConnect.m */; };
 		07DD94900D9F99EE00FFFDDA /* WizConnectDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DD948F0D9F99EE00FFFDDA /* WizConnectDownload.m */; };
+		07ED53340DF01D9C00F2D94D /* APPL.icns in Resources */ = {isa = PBXBuildFile; fileRef = 07ED53330DF01D9C00F2D94D /* APPL.icns */; };
 		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -60,6 +61,7 @@
 		07DD94020D9E206000FFFDDA /* WizConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizConnect.m; sourceTree = "<group>"; };
 		07DD948E0D9F99EE00FFFDDA /* WizConnectDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizConnectDownload.h; sourceTree = "<group>"; };
 		07DD948F0D9F99EE00FFFDDA /* WizConnectDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizConnectDownload.m; sourceTree = "<group>"; };
+		07ED53330DF01D9C00F2D94D /* APPL.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = APPL.icns; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -175,6 +177,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				07ED53330DF01D9C00F2D94D /* APPL.icns */,
 				070866320DB8B5550062D875 /* Icons */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -244,6 +247,7 @@
 				0708667E0DB8C9340062D875 /* action_pause.png in Resources */,
 				070866810DB8CB920062D875 /* QueuedSubview.nib in Resources */,
 				0764D5F50DDB0D9C004C5AEF /* action_stop.png in Resources */,
+				07ED53340DF01D9C00F2D94D /* APPL.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

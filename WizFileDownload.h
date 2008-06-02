@@ -83,13 +83,17 @@ typedef struct
 -(bool) isDownloading;
 
 -(void) downloadWithDownloadPath: (NSString *) aPath;
+-(void) downloadTrunc;
 -(void) downloadTS;
+-(void) downloadSelectChunk;
 -(void) downloadPartialChunk: (unsigned long long) fsize;
 -(void) downloadNextChunk;
 
+-(void) finishDownload;
 -(void) cancelDownload;
 -(void) pauseDownload;
 -(void) resumeDownload;
+-(void) retryDownloadAfterError;
 
 // WizConnectDownloadDelegate
 -(void)wizDownload: (WizConnectDownload *) download didReceiveBytes: (int) numBytes;
@@ -103,5 +107,6 @@ typedef struct
 -(void) downloadWasPaused: (WizFileDownload *)dl;
 -(void) downloadWasResumed: (WizFileDownload *)dl;
 -(void) downloadWasCanceled: (WizFileDownload *)dl;
+-(void) downloadFailed: (WizFileDownload *)dl withError: (NSError *) error;
 -(void) downloadFinished: (WizFileDownload *)dl;
 @end

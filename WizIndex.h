@@ -58,6 +58,8 @@ id delegate;
 -(void) loadNextWizFile;
 -(void) loadTrunc;
 
+-(void) sortIndexForTableView: (NSTableView *) aTableView;
+
 // WizConnectDownloadDelegate
 -(void)wizDownload: (WizConnectDownload *) download didReceiveBytes: (int) numBytes;
 -(void)wizDownload: (WizConnectDownload *) download didFailWithError: (NSError *) error;

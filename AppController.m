@@ -72,7 +72,7 @@
 //WizIndex delegate methods
 -(void) indexUpdated
 {
-	[table reloadData];
+	[index sortIndexForTableView: table];
 }
 
 -(void) indexUpdateFailedWithError: (NSError *) error

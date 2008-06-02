@@ -223,6 +223,12 @@
 	}
 }
 
+-(void) sortIndexForTableView: (NSTableView *) aTableView
+{
+	[wizFiles sortUsingDescriptors: [aTableView sortDescriptors]];
+	[aTableView reloadData];
+}
+
 //NSTableDataSource methods
 - (int)numberOfRowsInTableView:(NSTableView *)tableView
 {
@@ -262,8 +268,7 @@
 
 - (void)tableView:(NSTableView *)aTableView sortDescriptorsDidChange:(NSArray *)oldDescriptors
 {
-	[wizFiles sortUsingDescriptors: [aTableView sortDescriptors]];
-	[aTableView reloadData];
+	[self sortIndexForTableView: aTableView];
 }
 
 @end

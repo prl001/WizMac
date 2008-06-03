@@ -262,6 +262,10 @@
 	{
 		return [file durationString];
 	}
+	else if ([[tableColumn identifier] isEqualToString:@"filesize"])
+	{
+		return [file filesizeString];
+	}
 
 	return nil;
 }

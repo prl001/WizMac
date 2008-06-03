@@ -31,12 +31,23 @@
 	return self;
 }
 
++ (void)initialize{
+ 
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *appDefaults = [NSDictionary
+        dictionaryWithObject:@"" forKey:@"WizIP"];
+ 
+    [defaults registerDefaults:appDefaults];
+}
+
 -(void) awakeFromNib
 {
 	[table setDataSource: index];
 	dlQueue = [WizDLQueue dlQueueWithDelegate: queueController];
 	[dlQueue retain];
 
+	[host setStringValue: [[NSUserDefaults standardUserDefaults] objectForKey:@"WizIP"]];
+	
 	[[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
@@ -44,6 +55,8 @@
 	WizConnect *wizConnect;
 
 	wizConnect = [[WizConnect alloc] initWithHost: [host stringValue] port: [port intValue]];
+
+	[[NSUserDefaults standardUserDefaults] setObject:[host stringValue] forKey:@"WizIP"];
 
 	[window setTitle: [NSString stringWithFormat: @"WizMac (%@:%d)", [wizConnect host], [wizConnect port]]];
 

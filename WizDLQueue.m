@@ -82,18 +82,9 @@
 	if(index == NSNotFound)
 		return false;
 
-	if([wizFileDownload isDownloading])
-	{
-		[wizFileDownload cancelDownload];
-		[self startNextDownload];
-	}
-
 	if(wizFileDownload == currentDownload)
 	{
-		if(index == 0)
-			currentDownload = nil;
-		else
-			currentDownload = [queue objectAtIndex: index - 1];
+		[self startNextDownload];
 	}
 
 	[queue removeObject: wizFileDownload];
@@ -118,6 +109,8 @@
 		// start download
 		// update queue controller to show download view.
 	}
+	else
+		currentDownload = nil;
 }
 
 -(void) downloadFinished: (WizFileDownload *) file
@@ -157,7 +150,6 @@
 	NSLog(@"Download Canceled!");
 	
 	[self removeWizFile: file];
-	[self startNextDownload];
 }
 
 -(void) dealloc

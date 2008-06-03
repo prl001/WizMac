@@ -32,10 +32,11 @@
 }
 
 + (void)initialize{
- 
+	NSArray *keys = [NSArray arrayWithObjects: @"WizIP", @"WizPort", nil];
+	NSArray *objects = [NSArray arrayWithObjects: @"192.168.1.4", @"49152", nil];
+	
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *appDefaults = [NSDictionary
-        dictionaryWithObject:@"" forKey:@"WizIP"];
+    NSDictionary *appDefaults = [NSDictionary dictionaryWithObjects: objects forKeys: keys];
  
     [defaults registerDefaults:appDefaults];
 }
@@ -46,8 +47,10 @@
 	dlQueue = [WizDLQueue dlQueueWithDelegate: queueController];
 	[dlQueue retain];
 
-	[host setStringValue: [[NSUserDefaults standardUserDefaults] objectForKey:@"WizIP"]];
-	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[host setStringValue: [defaults objectForKey:@"WizIP"]];
+	[port setStringValue: [defaults objectForKey:@"WizPort"]];
+
 	[[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
@@ -55,8 +58,11 @@
 	WizConnect *wizConnect;
 
 	wizConnect = [[WizConnect alloc] initWithHost: [host stringValue] port: [port intValue]];
-
-	[[NSUserDefaults standardUserDefaults] setObject:[host stringValue] forKey:@"WizIP"];
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	[defaults setObject:[host stringValue] forKey:@"WizIP"];
+	[defaults setObject:[port stringValue] forKey:@"WizPort"];
 
 	[window setTitle: [NSString stringWithFormat: @"WizMac (%@:%d)", [wizConnect host], [wizConnect port]]];
 

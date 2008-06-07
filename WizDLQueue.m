@@ -90,6 +90,12 @@
 	[queue removeObject: wizFileDownload];
 	[delegate removeRow: wizFileDownload];
 
+	//we are removing the currentDownload and there is no new download to start.
+	//set the current Download pointer to the end of the list.
+	if(wizFileDownload == currentDownload)
+	{
+		currentDownload = [queue lastObject];
+	}
 	return true;
 }
 
@@ -103,14 +109,14 @@
 	if(newIndex < [queue count])
 	{
 		currentDownload = [queue objectAtIndex: newIndex];
-		[currentDownload downloadWithDownloadPath: [[NSString stringWithString: @"~/Desktop"] stringByExpandingTildeInPath]];
+		NSString *downloadDir = [[[NSUserDefaults standardUserDefaults] objectForKey: @"WizPrefDownloadDir"] stringByExpandingTildeInPath];
+		[currentDownload downloadWithDownloadPath: downloadDir];
 
 		[delegate updateRow: currentDownload];
 		// start download
 		// update queue controller to show download view.
 	}
-	else
-		currentDownload = nil;
+
 }
 
 -(void) downloadFinished: (WizFileDownload *) file

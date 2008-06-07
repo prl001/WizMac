@@ -173,11 +173,10 @@ NSLog(@"truncPath = %@", truncPath);
 
 -(void) downloadTS
 {
-//	NSString *desktop = [[NSString stringWithString: @"~/Desktop"] stringByExpandingTildeInPath];
 	NSFileManager *fm = [NSFileManager defaultManager];
 	trunc_index = 0;
 
-	dir = [NSString stringWithFormat: @"%@/%@.ts.part", localPath, [wizFile file]];
+	dir = [NSString stringWithFormat: @"%@/%@.part", localPath, [wizFile localFilenameFromFormatString]];
 	[dir retain];
 	
 	if([fm fileExistsAtPath: dir] == NO)

@@ -35,6 +35,8 @@ IBOutlet NSTableView *table;
 IBOutlet NSProgressIndicator *spinner;
 IBOutlet NSTextField *statusLabel;
 IBOutlet NSWindow *window;
+IBOutlet NSWindow *prefWindow;
+
 IBOutlet QueueController *queueController;
 
 WizIndex *index;

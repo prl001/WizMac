@@ -105,6 +105,41 @@
 	return filename;
 }
 
+-(NSString *) localFilenameFromFormatString
+{
+	NSString *formatString = [[NSUserDefaults standardUserDefaults] objectForKey: @"WizPrefFilenameFormat"];
+
+	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init]  autorelease];
+	
+	NSLog(@"format string = %@", formatString);
+	
+	[dateFormatter setFormatterBehavior: NSDateFormatterBehavior10_4];
+	[dateFormatter setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"UTC"]];
+	[dateFormatter setDateFormat: formatString];
+	
+	NSString *dateString = [dateFormatter stringFromDate: date];
+	NSMutableString *formattedString = [NSMutableString stringWithCapacity: [dateString length]];
+	[formattedString setString: dateString];	
+
+	[self parseFilenameForSpecialChars: formattedString];
+
+	return [NSString stringWithString: formattedString];
+}
+
+-(void) parseFilenameForSpecialChars: (NSMutableString *) s
+{
+	int i;	
+
+	for(i=0;i < [s length];i++)
+	{
+		switch([s characterAtIndex: i])
+		{
+			case '!' : [s replaceCharactersInRange: NSMakeRange(i,1) withString: svcName]; i += ([svcName length] - 1); break;
+			case '@' : [s replaceCharactersInRange: NSMakeRange(i,1) withString: evtName]; i += ([evtName length] - 1); break;
+		}
+	}
+}
+
 -(NSString *) file
 {
 	return file;

@@ -16,6 +16,8 @@
 		070866810DB8CB920062D875 /* QueuedSubview.nib in Resources */ = {isa = PBXBuildFile; fileRef = 070866800DB8CB920062D875 /* QueuedSubview.nib */; };
 		0708668B0DB8CCAA0062D875 /* QueuedSubviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0708668A0DB8CCAA0062D875 /* QueuedSubviewController.m */; };
 		070867870DBB15B50062D875 /* WizFileDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 070867860DBB15B50062D875 /* WizFileDownload.m */; };
+		071313080DF6BF48003103CC /* PrefController.m in Sources */ = {isa = PBXBuildFile; fileRef = 071313070DF6BF48003103CC /* PrefController.m */; };
+		071313150DF8004A003103CC /* Prefs.m in Sources */ = {isa = PBXBuildFile; fileRef = 071313140DF8004A003103CC /* Prefs.m */; };
 		074320A80D99105C00BC3C6A /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 074320A70D99105C00BC3C6A /* AppController.m */; };
 		074320BD0D9BA86400BC3C6A /* WizFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 074320BC0D9BA86400BC3C6A /* WizFile.m */; };
 		074321000D9DDB7A00BC3C6A /* WizIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 074320FF0D9DDB7A00BC3C6A /* WizIndex.m */; };
@@ -47,6 +49,10 @@
 		0708668A0DB8CCAA0062D875 /* QueuedSubviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueuedSubviewController.m; sourceTree = "<group>"; };
 		070867850DBB15B50062D875 /* WizFileDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizFileDownload.h; sourceTree = "<group>"; };
 		070867860DBB15B50062D875 /* WizFileDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizFileDownload.m; sourceTree = "<group>"; };
+		071313060DF6BF48003103CC /* PrefController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefController.h; sourceTree = "<group>"; };
+		071313070DF6BF48003103CC /* PrefController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefController.m; sourceTree = "<group>"; };
+		071313130DF8004A003103CC /* Prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefs.h; sourceTree = "<group>"; };
+		071313140DF8004A003103CC /* Prefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Prefs.m; sourceTree = "<group>"; };
 		074320A60D99105C00BC3C6A /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		074320A70D99105C00BC3C6A /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		074320BB0D9BA86400BC3C6A /* WizFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizFile.h; sourceTree = "<group>"; };
@@ -103,6 +109,8 @@
 				070861300DB1EA2C0062D875 /* SubviewTableViewCell.m */,
 				070861310DB1EA2C0062D875 /* SubviewTableViewController.h */,
 				070861320DB1EA2C0062D875 /* SubviewTableViewController.m */,
+				071313060DF6BF48003103CC /* PrefController.h */,
+				071313070DF6BF48003103CC /* PrefController.m */,
 				070861100DB1E8B80062D875 /* QueueController.h */,
 				070861110DB1E8B80062D875 /* QueueController.m */,
 				07C4A41C0DAF8CF0006901D5 /* DLSubviewController.h */,
@@ -123,6 +131,8 @@
 				07DD948F0D9F99EE00FFFDDA /* WizConnectDownload.m */,
 				070865040DB7614F0062D875 /* WizDLQueue.h */,
 				070865050DB7614F0062D875 /* WizDLQueue.m */,
+				071313130DF8004A003103CC /* Prefs.h */,
+				071313140DF8004A003103CC /* Prefs.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -271,6 +281,8 @@
 				070865060DB7614F0062D875 /* WizDLQueue.m in Sources */,
 				0708668B0DB8CCAA0062D875 /* QueuedSubviewController.m in Sources */,
 				070867870DBB15B50062D875 /* WizFileDownload.m in Sources */,
+				071313080DF6BF48003103CC /* PrefController.m in Sources */,
+				071313150DF8004A003103CC /* Prefs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

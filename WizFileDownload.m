@@ -41,7 +41,11 @@
 	delegate = nil;
 	wizDownload = nil;
 	trunc = nil;
-	
+	resumeFromPartialDownload = YES;
+	status = WizFileDownload_New; 
+
+	[self setDownloadPath: @""];
+
 	[self initDLRateCalc];
 
 	return self;
@@ -72,6 +76,11 @@
 	rate.sampleIndex = 0;
 	rate.timer = nil;
 	rate.bytesDownloaded = 0;
+}
+
+-(void) resumeFromPartialDownload: (BOOL) answer
+{
+	resumeFromPartialDownload = answer;
 }
 
 -(void) startDLRateCalc
@@ -142,22 +151,69 @@
 	return NO;
 }
 
--(void) downloadWithDownloadPath: (NSString *) aPath 
+-(bool) checkForExistingDownload
+{
+	NSString *file = [NSString stringWithFormat: @"%@/%@", localPath, [wizFile localFilenameFromFormatString]];
+	NSFileManager *fm = [NSFileManager defaultManager];
+	
+	return [fm fileExistsAtPath: file];
+}
+
+-(bool) checkForExistingPartialDownload
+{
+	NSFileManager *fm = [NSFileManager defaultManager];
+	
+	return [fm fileExistsAtPath: [self partialDownloadDir]];
+}
+
+
+-(bool) setDownloadPath: (NSString *) aPath
 {
 	if([self isDownloading] == YES)
-		return;
-
-	status = WizFileDownload_InProgress;
+		return NO;
 
 	localPath = [aPath copy];
 	[localPath retain];
+	
+	return YES;
+}
+
+//FIXME we need to move these values into instance variables. because they could change during download.
+-(NSString *) partialDownloadDir
+{
+	return [NSString stringWithFormat: @"%@/%@.part", localPath, [wizFile localFilenameFromFormatString]];
+}
+
+-(NSString *) completeDownloadFilename
+{
+	return [NSString stringWithFormat: @"%@/%@", localPath, [wizFile localFilenameFromFormatString]];
+}
+
+-(NSString *) downloadPath
+{
+	return localPath;
+}
+
+-(bool) downloadWithDownloadPath: (NSString *) aPath 
+{
+	[self setDownloadPath: aPath];
+	
+	return [self download];
+}
+
+-(bool) download
+{
+	if([self isDownloading] == YES)
+		return NO;
+
+	status = WizFileDownload_InProgress;
 
 	trunc = [NSMutableData dataWithLength: 4028];
 	[trunc retain];
 
 	[self downloadTrunc];
 
-	return;
+	return YES;
 }
 
 -(void) downloadTrunc
@@ -179,11 +235,17 @@ NSLog(@"truncPath = %@", truncPath);
 	dir = [NSString stringWithFormat: @"%@/%@.part", localPath, [wizFile localFilenameFromFormatString]];
 	[dir retain];
 	
-	if([fm fileExistsAtPath: dir] == NO)
+	if([fm fileExistsAtPath: dir] == YES)
 	{
-		[fm createDirectoryAtPath: dir attributes: nil];
+		if(resumeFromPartialDownload == NO)
+		{
+			if([fm removeFileAtPath: dir handler: nil] == YES)
+				[fm createDirectoryAtPath: dir attributes: nil]; //create a new fresh dir
+		}
 	}
-	
+	else
+		[fm createDirectoryAtPath: dir attributes: nil];
+
 	//save trunc file
 	NSLog([NSString stringWithFormat: @"%@/trunc", dir]);
 	if([trunc writeToFile: [NSString stringWithFormat: @"%@/trunc", dir] atomically: YES] == NO)
@@ -307,6 +369,12 @@ NSLog(@"truncPath = %@", truncPath);
 	NSString *datafile = [NSString stringWithFormat: @"%@/data.ts", dir];
 	NSString *newTSFile = [dir  substringToIndex: [dir length] - 5]; //dir - '.part'
 	
+
+	//remove existing file.
+	if([fm fileExistsAtPath: newTSFile])
+		[fm removeFileAtPath: newTSFile handler: nil];
+
+	//rename data.ts and remove .part directory.
 	if([fm movePath: datafile toPath: newTSFile handler: nil] == YES)
 		[fm removeFileAtPath: dir handler: nil];
 	

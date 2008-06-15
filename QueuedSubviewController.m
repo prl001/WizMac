@@ -43,12 +43,21 @@
 			
 		switch([wizFileDownload status])
 		{
-			case WizFileDownload_Complete : [infoLabel setStringValue: [NSString stringWithFormat: @"Done - Downloaded %@",[wizFileDownload bytesDownloadedString]]]; break;
+			case WizFileDownload_Complete : [self showShowInFinderMenuItem];
+				[infoLabel setStringValue: [NSString stringWithFormat: @"Done - Downloaded %@",[wizFileDownload bytesDownloadedString]]];
+				break;
+
 			case WizFileDownload_Queued : [infoLabel setStringValue: @"Queued"]; break;
 		}
 	}
 
     return self;
+}
+
+-(void) showShowInFinderMenuItem
+{
+	NSMenuItem *item = [contextualMenu itemWithTag: 0];
+	[item setEnabled: YES];
 }
 
 -(void) awakeFromNib
@@ -63,6 +72,11 @@
 	[wizFileDownload cancelDownload];
 }
 
+-(IBAction) showInFinder: (id) sender
+{
+	NSString *fullPath = [wizFileDownload completeDownloadFilename];
+	[[NSWorkspace sharedWorkspace] selectFile: fullPath inFileViewerRootedAtPath: nil];
+}
 
 - (void) dealloc
 {

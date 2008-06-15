@@ -29,6 +29,7 @@ actions methods from the view or the table view controller.
     IBOutlet NSTextField *fileLabel;
     IBOutlet NSTextField *fileLabel1;
     IBOutlet NSTextField *infoLabel;
+	IBOutlet NSMenu *contextualMenu;
 
 	WizFileDownload *wizFileDownload;
 }
@@ -39,11 +40,12 @@ actions methods from the view or the table view controller.
 + (id) controllerWithWizFileDownload: (WizFileDownload *) f;
 
 
+-(void) showShowInFinderMenuItem;
 
 // The view displayed in the table view
 - (NSView *) view;
 - (WizFileDownload *) wizFileDownload;
 
 -(IBAction) cancelDownload: (id) sender;
-
+-(IBAction) showInFinder: (id) sender;
 @end

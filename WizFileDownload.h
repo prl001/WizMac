@@ -27,6 +27,7 @@
 
 typedef enum 
 {
+	WizFileDownload_New, 
 	WizFileDownload_Queued, 
 	WizFileDownload_InProgress,
 	WizFileDownload_Paused,
@@ -49,7 +50,9 @@ typedef struct
  WizFile *wizFile;
  NSString *dir, *localPath;
  NSFileHandle *tsFile;
-
+ 
+ BOOL resumeFromPartialDownload;
+ 
  int trunc_index;
  //int num_chunks;
  unsigned long long bytesDownloaded;
@@ -69,6 +72,9 @@ typedef struct
 -(id)initWithWizFile: (WizFile *) aWizFile Delegate: (id) d;
 
 -(void) initDLRateCalc;
+
+-(void) resumeFromPartialDownload: (BOOL) answer;
+
 -(void) startDLRateCalc;
 - (void) updateDLRateCalc: (NSTimer *) aTimer;
 -(unsigned int) avgDownloadRate;
@@ -82,7 +88,17 @@ typedef struct
 -(double) percentageDownloaded;
 -(bool) isDownloading;
 
--(void) downloadWithDownloadPath: (NSString *) aPath;
+-(bool) checkForExistingDownload;
+-(bool) checkForExistingPartialDownload;
+
+-(bool) setDownloadPath: (NSString *) aPath;
+-(NSString *) downloadPath;
+-(NSString *) partialDownloadDir;
+-(NSString *) completeDownloadFilename;
+
+-(bool) downloadWithDownloadPath: (NSString *) aPath;
+-(bool) download;
+
 -(void) downloadTrunc;
 -(void) downloadTS;
 -(void) downloadSelectChunk;

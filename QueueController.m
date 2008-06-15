@@ -51,6 +51,58 @@
     [super dealloc];
 }
 
+- (BOOL) shouldOverwriteExistingDownload: (WizFileDownload *) f
+{
+	BOOL ret = NO;
+	WizFile *wizFile = [f wizFile];
+	NSString *filename = [NSString stringWithFormat: @"%@ %@ %@ %@", [wizFile evtName], [wizFile svcName], [wizFile dateString], [wizFile startString]];
+
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert addButtonWithTitle:@"Overwrite Existing"];
+	[alert addButtonWithTitle:@"Cancel"];
+	[alert setMessageText:@"This file has already been downloaded.\nWhat would you like to do?"];
+	[alert setInformativeText: filename];
+	[alert setAlertStyle:NSWarningAlertStyle];
+	
+	if([alert runModal] == NSAlertFirstButtonReturn)
+	{
+		ret = YES;
+	}
+		
+	[alert release];
+	
+	return ret;
+}
+
+- (WizDLResumePartialStatus) shouldResumePartialDownload: (WizFileDownload *) f
+{
+	WizDLResumePartialStatus ret = WizDLResumePartial_Cancel;
+	WizFile *wizFile = [f wizFile];
+	NSString *filename = [NSString stringWithFormat: @"%@ %@ %@ %@", [wizFile evtName], [wizFile svcName], [wizFile dateString], [wizFile startString]];
+
+	NSAlert *alert = [[NSAlert alloc] init];
+
+	[alert addButtonWithTitle:@"Resume Download"];
+	[alert addButtonWithTitle:@"Remove Files"];
+	[alert addButtonWithTitle:@"Cancel"];
+
+	[alert setMessageText:@"This file has been partialy downloaded.\nWhat would you like to do?"];
+	
+	[alert setInformativeText: filename];
+	[alert setAlertStyle:NSWarningAlertStyle];
+	
+	switch([alert runModal])
+	{
+		case  NSAlertFirstButtonReturn : ret = WizDLResumePartial_Yes; break;
+		case  NSAlertSecondButtonReturn : ret = WizDLResumePartial_No; break;
+		case  NSAlertThirdButtonReturn : ret = WizDLResumePartial_Cancel; break;
+	}
+
+	[alert release];
+	
+	return ret;
+}
+
 - (void)addRow:(WizFileDownload *) f
 {
     NSIndexSet *selectedRows = [subviewTableView selectedRowIndexes];

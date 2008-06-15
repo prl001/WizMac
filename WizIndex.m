@@ -63,6 +63,19 @@
 	return [wizFiles objectAtIndex: i];
 }
 
+-(int) count
+{
+	return curLoadIndex;
+}
+
+-(int) totalFiles
+{
+	if(filenames == nil)
+		return 0;
+
+	return [filenames count];
+}
+
 -(BOOL) getIndex
 {
 	index_data = [NSMutableData dataWithLength: 2048];
@@ -225,7 +238,23 @@
 
 -(void) sortIndexForTableView: (NSTableView *) aTableView
 {
+	NSArray *selectedFiles = [self getWizFilesFromIndexSet: [aTableView selectedRowIndexes]];
+	
 	[wizFiles sortUsingDescriptors: [aTableView sortDescriptors]];
+	
+	if([selectedFiles count] > 0) //reselect rows if required
+	{
+		[aTableView deselectAll: self];
+				
+		NSEnumerator *enumerator = [selectedFiles objectEnumerator];
+		WizFile *file;
+ 
+		while (file = [enumerator nextObject])
+		{
+			[aTableView selectRow: [wizFiles indexOfObject: file] byExtendingSelection: YES];
+		}
+	}
+
 	[aTableView reloadData];
 }
 

@@ -26,10 +26,22 @@
 #import "WizFile.h"
 #import "WizFileDownload.h"
 
+typedef enum 
+{
+	WizDLResumePartial_Yes, 
+	WizDLResumePartial_YesAll, 
+	WizDLResumePartial_No,
+	WizDLResumePartial_NoAll,
+	WizDLResumePartial_Cancel
+} WizDLResumePartialStatus;
+
 @protocol WizDLQueueDelegate
 -(void) addRow:(WizFileDownload *) f;
 -(void) updateRow:(WizFileDownload *) f;
 -(void) removeRow:(WizFileDownload *) f;
+
+- (BOOL) shouldOverwriteExistingDownload: (WizFileDownload *) f;
+- (WizDLResumePartialStatus) shouldResumePartialDownload: (WizFileDownload *) f;
 @end
 
 @interface WizDLQueue : NSObject {

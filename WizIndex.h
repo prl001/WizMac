@@ -54,6 +54,9 @@ id delegate;
 
 -(BOOL) getIndex;
 
+-(int) count; //count of index entries currently loaded.
+-(int) totalFiles; //count of total entries on the wiz.
+
 -(void) loadIndexData;
 -(void) loadNextWizFile;
 -(void) loadTrunc;

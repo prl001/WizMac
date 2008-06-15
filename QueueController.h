@@ -26,13 +26,16 @@ SubviewTableViewController.
 @interface QueueController : NSObject < SubviewTableViewControllerDataSourceProtocol,WizDLQueueDelegate >
 {
     @private
-    
+    IBOutlet NSWindow *window;
     IBOutlet NSTableView *subviewTableView;
     NSTableColumn *subviewTableColumn;
     
     SubviewTableViewController *tableViewController;
     NSMutableArray *subviewControllers;
 }
+
+- (BOOL) shouldOverwriteExistingDownload: (WizFileDownload *) f;
+- (WizDLResumePartialStatus) shouldResumePartialDownload: (WizFileDownload *) f;
 
 - (void) addRow:(WizFileDownload *) f;
 - (void) updateRow:(WizFileDownload *) f;

@@ -82,6 +82,8 @@
 //WizIndex delegate methods
 -(void) indexUpdated
 {
+	[statusLabel setStringValue: [NSString stringWithFormat: @"Retrieving file list. (%d/%d)", [index count], [index totalFiles]]];
+	[spinner setDoubleValue: (double)[index count] / (double)[index totalFiles]];
 	[index sortIndexForTableView: table];
 }
 
@@ -99,6 +101,7 @@
 {
 	[statusLabel setHidden: true];
 	[spinner stopAnimation: self];
+	[spinner setHidden: true];
 }
 
 //NSAlert selector

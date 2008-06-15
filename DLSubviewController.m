@@ -108,6 +108,12 @@
 		[wizFileDownload pauseDownload];
 }
 
+-(IBAction) showInFinder: (id) sender
+{
+	NSString *fullPath = [wizFileDownload partialDownloadDir];
+	[[NSWorkspace sharedWorkspace] selectFile: fullPath inFileViewerRootedAtPath: nil];
+}
+
 - (void) dealloc
 {
 	if(downloadTimer != nil)
@@ -126,6 +132,5 @@
 {
 	return wizFileDownload;
 }
-
 
 @end

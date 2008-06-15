@@ -53,5 +53,5 @@ actions methods from the view or the table view controller.
 
 -(IBAction) cancelDownload: (id) sender;
 -(IBAction) pauseDownload: (id) sender;
-
+-(IBAction) showInFinder: (id) sender;
 @end

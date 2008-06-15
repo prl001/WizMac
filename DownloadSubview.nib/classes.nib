@@ -11,6 +11,8 @@
 				<string>id</string>
 				<key>pauseDownload</key>
 				<string>id</string>
+				<key>showInFinder</key>
+				<string>id</string>
 			</dict>
 			<key>CLASS</key>
 			<string>DLSubviewController</string>
@@ -41,6 +43,14 @@
 			<string>ObjC</string>
 			<key>SUPERCLASS</key>
 			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>WizTextField</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSTextField</string>
 		</dict>
 	</array>
 	<key>IBVersion</key>

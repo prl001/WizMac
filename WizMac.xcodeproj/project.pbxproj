@@ -24,6 +24,7 @@
 		0764D5F50DDB0D9C004C5AEF /* action_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 0764D5F40DDB0D9C004C5AEF /* action_stop.png */; };
 		07C4A4180DAF82E9006901D5 /* DownloadSubview.nib in Resources */ = {isa = PBXBuildFile; fileRef = 07C4A4170DAF82E9006901D5 /* DownloadSubview.nib */; };
 		07C4A41E0DAF8CF0006901D5 /* DLSubviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C4A41D0DAF8CF0006901D5 /* DLSubviewController.m */; };
+		07DAE0720E05110B0020DBEB /* WizTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DAE0710E05110B0020DBEB /* WizTextField.m */; };
 		07DD94030D9E206000FFFDDA /* WizConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DD94020D9E206000FFFDDA /* WizConnect.m */; };
 		07DD94900D9F99EE00FFFDDA /* WizConnectDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DD948F0D9F99EE00FFFDDA /* WizConnectDownload.m */; };
 		07ED53340DF01D9C00F2D94D /* APPL.icns in Resources */ = {isa = PBXBuildFile; fileRef = 07ED53330DF01D9C00F2D94D /* APPL.icns */; };
@@ -63,6 +64,8 @@
 		07C4A4170DAF82E9006901D5 /* DownloadSubview.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = DownloadSubview.nib; sourceTree = "<group>"; };
 		07C4A41C0DAF8CF0006901D5 /* DLSubviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLSubviewController.h; sourceTree = "<group>"; };
 		07C4A41D0DAF8CF0006901D5 /* DLSubviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLSubviewController.m; sourceTree = "<group>"; };
+		07DAE0700E05110B0020DBEB /* WizTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizTextField.h; sourceTree = "<group>"; };
+		07DAE0710E05110B0020DBEB /* WizTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizTextField.m; sourceTree = "<group>"; };
 		07DD94010D9E206000FFFDDA /* WizConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizConnect.h; sourceTree = "<group>"; };
 		07DD94020D9E206000FFFDDA /* WizConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizConnect.m; sourceTree = "<group>"; };
 		07DD948E0D9F99EE00FFFDDA /* WizConnectDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizConnectDownload.h; sourceTree = "<group>"; };
@@ -133,6 +136,8 @@
 				070865050DB7614F0062D875 /* WizDLQueue.m */,
 				071313130DF8004A003103CC /* Prefs.h */,
 				071313140DF8004A003103CC /* Prefs.m */,
+				07DAE0700E05110B0020DBEB /* WizTextField.h */,
+				07DAE0710E05110B0020DBEB /* WizTextField.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 				070867870DBB15B50062D875 /* WizFileDownload.m in Sources */,
 				071313080DF6BF48003103CC /* PrefController.m in Sources */,
 				071313150DF8004A003103CC /* Prefs.m in Sources */,
+				07DAE0720E05110B0020DBEB /* WizTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

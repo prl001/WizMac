@@ -57,7 +57,7 @@
 -(void) addWizFiles: (NSArray *) files
 {
 	//[queue addObjectsFromArray: files];
-
+	NSString *downloadDir = [[[NSUserDefaults standardUserDefaults] objectForKey: @"WizPrefDownloadDir"] stringByExpandingTildeInPath];
 	NSEnumerator *e = [files objectEnumerator];
 	
 	WizFile *file;
@@ -66,6 +66,24 @@
 	for(;file = [e nextObject];)
 	{
 		wizFileDownload = [WizFileDownload wizFileDownload: file Delegate: self];
+		[wizFileDownload setDownloadPath: downloadDir];
+		
+		if([wizFileDownload checkForExistingDownload] == YES)
+		{
+			if([delegate shouldOverwriteExistingDownload: wizFileDownload] == NO)
+				continue;
+		}
+
+		if([wizFileDownload checkForExistingPartialDownload] == YES)
+		{
+			
+			switch([delegate shouldResumePartialDownload: wizFileDownload])
+			{
+				case WizDLResumePartial_No : [wizFileDownload resumeFromPartialDownload: NO]; break;
+				case WizDLResumePartial_Cancel : continue;
+			}
+		}
+
 		[queue addObject: wizFileDownload];
 		[delegate addRow: wizFileDownload];
 	}
@@ -109,8 +127,7 @@
 	if(newIndex < [queue count])
 	{
 		currentDownload = [queue objectAtIndex: newIndex];
-		NSString *downloadDir = [[[NSUserDefaults standardUserDefaults] objectForKey: @"WizPrefDownloadDir"] stringByExpandingTildeInPath];
-		[currentDownload downloadWithDownloadPath: downloadDir];
+		[currentDownload download];
 
 		[delegate updateRow: currentDownload];
 		// start download

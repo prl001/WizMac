@@ -5,6 +5,34 @@
 	<key>IBClasses</key>
 	<array>
 		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>cancelDownload</key>
+				<string>id</string>
+				<key>showInFinder</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>QueuedSubviewController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>contextualMenu</key>
+				<string>NSMenu</string>
+				<key>fileLabel</key>
+				<string>NSTextField</string>
+				<key>fileLabel1</key>
+				<string>NSTextField</string>
+				<key>infoLabel</key>
+				<string>NSTextField</string>
+				<key>subview</key>
+				<string>NSView</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
 			<key>CLASS</key>
 			<string>FirstResponder</string>
 			<key>LANGUAGE</key>
@@ -13,34 +41,12 @@
 			<string>NSObject</string>
 		</dict>
 		<dict>
-			<key>ACTIONS</key>
-			<dict>
-				<key>cancelDownload</key>
-				<string>id</string>
-				<key>pauseDownload</key>
-				<string>id</string>
-			</dict>
 			<key>CLASS</key>
-			<string>DLSubviewController</string>
+			<string>WizTextField</string>
 			<key>LANGUAGE</key>
 			<string>ObjC</string>
-			<key>OUTLETS</key>
-			<dict>
-				<key>fileLabel</key>
-				<string>NSTextField</string>
-				<key>fileLabel1</key>
-				<string>NSTextField</string>
-				<key>infoLabel</key>
-				<string>NSTextField</string>
-				<key>pauseButton</key>
-				<string>NSButton</string>
-				<key>progressIndicator</key>
-				<string>NSProgressIndicator</string>
-				<key>subview</key>
-				<string>NSView</string>
-			</dict>
 			<key>SUPERCLASS</key>
-			<string>NSObject</string>
+			<string>NSTextField</string>
 		</dict>
 	</array>
 	<key>IBVersion</key>

@@ -28,6 +28,7 @@
 
 IBOutlet NSTextField *downloadDir;
 IBOutlet NSTextField *filenameFormat;
+IBOutlet NSButton *autoConnectOnStartup;
 
 Prefs *prefs;
 

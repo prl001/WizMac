@@ -110,13 +110,29 @@
 		[self release];
 		return;
 	}
+	@try
+	{
+		if(file)
+			[file writeData: d];
+		else
+			[data appendData:d];
 
-	if(file)
-		[file writeData: d];
-	else
-		[data appendData:d];
+		[delegate wizDownload: self didReceiveBytes: [d length]];
+	}
+	@catch (NSException *ne)
+	{
+		NSLog(@"Exception: %@ Reason: %@", [ne name], [ne reason]);
+		NSArray *reasonItems = [[ne reason] componentsSeparatedByString: @": "];
+		
+		NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+		[userInfo setValue: @"Error: WizConnectDownload" forKey: NSLocalizedDescriptionKey];
+		[userInfo setValue: [reasonItems lastObject] forKey:  NSLocalizedRecoverySuggestionErrorKey];
 	
-	[delegate wizDownload: self didReceiveBytes: [d length]];
+		NSError *error = [NSError errorWithDomain: @"WizErrorDomain" code: WizConnectDownloadError_WritingData userInfo: userInfo];
+		[connection cancel];
+		[delegate wizDownload: self didFailWithError: error];
+		[self release];
+	}
 	
 	 return; 
 }

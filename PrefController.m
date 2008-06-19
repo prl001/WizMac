@@ -81,12 +81,14 @@
 {
 	[downloadDir setStringValue: [prefs downloadDir]];
 	[filenameFormat setStringValue: [prefs filenameFormat]];
+	[autoConnectOnStartup setState: [prefs autoConnectOnStartup] ? NSOnState : NSOffState];
 }
 
 -(void) updatePrefs
 {
 	[prefs setDownloadDir: [downloadDir stringValue]];
 	[prefs setFilenameFormat: [filenameFormat stringValue]];
+	[prefs setAutoConnectOnStartup: [autoConnectOnStartup state] == NSOnState ? YES : NO];
 }
 
 -(void)dealloc

@@ -37,8 +37,8 @@
 +(void)initialize
 {
 	//load defaults
-	NSArray *keys = [NSArray arrayWithObjects: @"WizPrefIP", @"WizPrefPort", @"WizPrefDownloadDir", @"WizPrefFilenameFormat", nil];
-	NSArray *objects = [NSArray arrayWithObjects: @"192.168.1.4", @"49152", @"~/Desktop", @"!_@_yyyyMMdd_HHmm.'ts'", nil];
+	NSArray *keys = [NSArray arrayWithObjects: @"WizPrefIP", @"WizPrefPort", @"WizPrefDownloadDir", @"WizPrefFilenameFormat", @"WizPrefAutoConnectOnStartup", nil];
+	NSArray *objects = [NSArray arrayWithObjects: @"192.168.1.4", @"49152", @"~/Desktop", @"!_@_yyyyMMdd_HHmm.'ts'", @"NO", nil];
 	
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *appDefaults = [NSDictionary dictionaryWithObjects: objects forKeys: keys];
@@ -73,6 +73,16 @@
 -(NSString *) filenameFormat
 {
 	return [defaults objectForKey:@"WizPrefFilenameFormat"];
+}
+
+-(void)setAutoConnectOnStartup: (BOOL) val
+{
+	[defaults setBool: val forKey:@"WizPrefAutoConnectOnStartup"];
+}
+
+-(BOOL)autoConnectOnStartup
+{
+	return [defaults boolForKey:@"WizPrefAutoConnectOnStartup"];
 }
 
 -(void)dealloc

@@ -229,6 +229,7 @@ NSLog(@"truncPath = %@", truncPath);
 
 -(void) downloadTS
 {
+	NSError *fileError = nil;
 	NSFileManager *fm = [NSFileManager defaultManager];
 	trunc_index = 0;
 
@@ -240,15 +241,32 @@ NSLog(@"truncPath = %@", truncPath);
 		if(resumeFromPartialDownload == NO)
 		{
 			if([fm removeFileAtPath: dir handler: nil] == YES)
-				[fm createDirectoryAtPath: dir attributes: nil]; //create a new fresh dir
+			{
+				if([fm createDirectoryAtPath: dir attributes: nil] == NO) //create a new fresh dir
+				{
+					[self failWithErrorTitle: @"Creating partial download directory" errorDesc: dir errorCode: 0];
+					return;
+				}
+			}
+			else
+			{
+				[self failWithErrorTitle: @"Deleting old download" errorDesc: dir errorCode: 0];
+				return;
+			}
 		}
 	}
 	else
-		[fm createDirectoryAtPath: dir attributes: nil];
-
+	{
+		if([fm createDirectoryAtPath: dir attributes: nil] == NO)
+		{
+			[self failWithErrorTitle: @"Creating partial download directory" errorDesc: dir errorCode: 0];
+			return;
+		}
+	}
+	
 	//save trunc file
 	NSLog([NSString stringWithFormat: @"%@/trunc", dir]);
-	if([trunc writeToFile: [NSString stringWithFormat: @"%@/trunc", dir] atomically: YES] == NO)
+	if([trunc writeToFile: [NSString stringWithFormat: @"%@/trunc", dir] options:  NSAtomicWrite error: &fileError]  == NO)
 		NSLog(@"ARgh!");
 
 	NSString *datafile = [NSString stringWithFormat: @"%@/data.ts", dir];
@@ -258,9 +276,15 @@ NSLog(@"truncPath = %@", truncPath);
 		//make sure file exists
 		//FIXME find a better way to make an empty file.
 		FILE *f = fopen([datafile cString], "w");
+		if(f == NULL)
+		{
+			[self failWithErrorTitle: @"Creating file" errorDesc: datafile errorCode: 0];
+			return;
+		}
+
 		fclose(f);
 	}
-	
+
 	tsFile = [NSFileHandle fileHandleForUpdatingAtPath: datafile];
 	[tsFile retain];
 
@@ -451,7 +475,15 @@ NSLog(@"truncPath = %@", truncPath);
 	//FIXME handle errors.
 	NSLog(@"ERROR Downloading file!");
 	wizDownload = nil;
-	[delegate downloadFailed: self withError: error];
+
+	if([[error domain] isEqualToString: @"WizErrorDomain"])
+	{
+		status = WizFileDownload_Error;
+		[tsFile closeFile];
+		[delegate downloadFailed: self withError: error];
+	}
+	else
+		[self retryDownloadAfterError];
 }
 
 -(void)wizDownloadDidFinishLoading: (WizConnectDownload *) download
@@ -474,6 +506,19 @@ NSLog(@"truncPath = %@", truncPath);
 			[self finishDownload];
 		}
 	}
+}
+
+-(void)failWithErrorTitle: (NSString *)errorTitle errorDesc: (NSString *)errorDesc errorCode: (int) errorCode
+{
+	status = WizFileDownload_Error;
+
+	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+	[userInfo setValue: [NSString stringWithFormat: @"Error: %@", errorTitle] forKey: NSLocalizedDescriptionKey];
+	[userInfo setValue: errorDesc forKey:  NSLocalizedRecoverySuggestionErrorKey];
+	
+	NSError *error = [NSError errorWithDomain: @"WizErrorDomain" code: errorCode userInfo: userInfo];
+
+	[delegate downloadFailed: self withError: error];
 }
 
 -(void)dealloc

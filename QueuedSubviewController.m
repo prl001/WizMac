@@ -48,6 +48,9 @@
 				break;
 
 			case WizFileDownload_Queued : [infoLabel setStringValue: @"Queued"]; break;
+			
+			case WizFileDownload_Error : [infoLabel setStringValue: @"Error downloading file!"]; break;
+
 		}
 	}
 

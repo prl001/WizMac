@@ -29,7 +29,7 @@ NSUserDefaults *defaults;
 
 NSString *downloadDir;
 NSString *filenameFormat;
-bool connectOnStartup;
+BOOL connectOnStartup;
 
 }
 
@@ -39,6 +39,9 @@ bool connectOnStartup;
 -(NSString *) downloadDir;
 -(void)setFilenameFormat: (NSString *)aFilenameFormat;
 -(NSString *) filenameFormat;
+
+-(void)setAutoConnectOnStartup: (BOOL) val;
+-(BOOL)autoConnectOnStartup;
 
 -(void)dealloc;
 @end

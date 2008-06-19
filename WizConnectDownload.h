@@ -23,6 +23,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define WizConnectDownloadError_WritingData 1
+
 @interface WizConnectDownload : NSObject {
 NSString *url_str;
 NSURLConnection *con;

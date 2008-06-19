@@ -42,6 +42,10 @@
 	[port setStringValue: [defaults objectForKey:@"WizPrefPort"]];
 
 	[[NSURLCache sharedURLCache] removeAllCachedResponses];
+	
+	//automatically connect to last known host. If auto connect on startup is selected in the config.
+	if([defaults boolForKey:@"WizPrefAutoConnectOnStartup"] == YES)
+		[self connectToWiz: self];
 }
 
 - (IBAction)connectToWiz:(id)sender

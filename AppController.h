@@ -24,13 +24,13 @@
 #import <Cocoa/Cocoa.h>
 #import <AppKit/NSTableView.h>
 
+#import "WizConnect.h"
 #import "WizIndex.h"
 #import "WizDLQueue.h"
 #import "QueueController.h"
+#import "ConnectionSheetController.h"
 
-@interface AppController : NSObject <WizIndexDelegate> {
-IBOutlet NSTextField *host;
-IBOutlet NSTextField *port;
+@interface AppController : NSObject <WizIndexDelegate, WizConnectProtocol> {
 IBOutlet NSTableView *table;
 IBOutlet NSProgressIndicator *spinner;
 IBOutlet NSTextField *statusLabel;
@@ -38,14 +38,15 @@ IBOutlet NSWindow *window;
 IBOutlet NSWindow *prefWindow;
 
 IBOutlet QueueController *queueController;
+IBOutlet ConnectionSheetController *connectionSheetContoller;
 
 WizIndex *index;
 WizDLQueue *dlQueue;
 
 }
 -(void) awakeFromNib;
-- (IBAction)connectToWiz:(id)sender;
 - (IBAction)downloadFile:(id)sender;
+-(IBAction)showConnectionSheet:(id)sender;
 
 //WizIndex delegate methods
 -(void) indexUpdated;
@@ -53,5 +54,8 @@ WizDLQueue *dlQueue;
 
 //NSAlert selector
 - (void) alertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo;
+
+//WizConnectProtocol
+-(void)newConnectionWithName: (NSString *) name host: (NSString *) host port: (int) port;
 
 @end

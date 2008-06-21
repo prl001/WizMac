@@ -43,3 +43,7 @@ int port;
 -(WizConnectDownload *) getFileAsynchronouslyWithPath: (NSString *) path appendToLocalFile: (NSFileHandle *)f startOffset: (int) startOffset maxLength: (int) maxLength delegate: (id) delegate;
 
 @end
+
+@protocol WizConnectProtocol
+-(void)newConnectionWithName: (NSString *) name host: (NSString *) host port: (int) port;
+@end

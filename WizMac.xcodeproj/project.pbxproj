@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070774CE0E0BB35300924506 /* WizUPnP.m in Sources */ = {isa = PBXBuildFile; fileRef = 070774CD0E0BB35300924506 /* WizUPnP.m */; };
 		070861120DB1E8B80062D875 /* QueueController.m in Sources */ = {isa = PBXBuildFile; fileRef = 070861110DB1E8B80062D875 /* QueueController.m */; };
 		070861330DB1EA2C0062D875 /* SubviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 070861300DB1EA2C0062D875 /* SubviewTableViewCell.m */; };
 		070861340DB1EA2C0062D875 /* SubviewTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 070861320DB1EA2C0062D875 /* SubviewTableViewController.m */; };
@@ -24,6 +25,8 @@
 		0764D5F50DDB0D9C004C5AEF /* action_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 0764D5F40DDB0D9C004C5AEF /* action_stop.png */; };
 		07C4A4180DAF82E9006901D5 /* DownloadSubview.nib in Resources */ = {isa = PBXBuildFile; fileRef = 07C4A4170DAF82E9006901D5 /* DownloadSubview.nib */; };
 		07C4A41E0DAF8CF0006901D5 /* DLSubviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C4A41D0DAF8CF0006901D5 /* DLSubviewController.m */; };
+		07CA0D370E0CCF9C000BD96E /* ConnectionSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07CA0D360E0CCF9C000BD96E /* ConnectionSheet.xib */; };
+		07CA0D3C0E0CD86D000BD96E /* ConnectionSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CA0D3B0E0CD86D000BD96E /* ConnectionSheetController.m */; };
 		07DAE0720E05110B0020DBEB /* WizTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DAE0710E05110B0020DBEB /* WizTextField.m */; };
 		07DD94030D9E206000FFFDDA /* WizConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DD94020D9E206000FFFDDA /* WizConnect.m */; };
 		07DD94900D9F99EE00FFFDDA /* WizConnectDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DD948F0D9F99EE00FFFDDA /* WizConnectDownload.m */; };
@@ -35,6 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		070774CC0E0BB35300924506 /* WizUPnP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizUPnP.h; sourceTree = "<group>"; };
+		070774CD0E0BB35300924506 /* WizUPnP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizUPnP.m; sourceTree = "<group>"; };
 		070861100DB1E8B80062D875 /* QueueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueController.h; sourceTree = "<group>"; };
 		070861110DB1E8B80062D875 /* QueueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueueController.m; sourceTree = "<group>"; };
 		0708612F0DB1EA2C0062D875 /* SubviewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubviewTableViewCell.h; sourceTree = "<group>"; };
@@ -64,6 +69,9 @@
 		07C4A4170DAF82E9006901D5 /* DownloadSubview.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = DownloadSubview.nib; sourceTree = "<group>"; };
 		07C4A41C0DAF8CF0006901D5 /* DLSubviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLSubviewController.h; sourceTree = "<group>"; };
 		07C4A41D0DAF8CF0006901D5 /* DLSubviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLSubviewController.m; sourceTree = "<group>"; };
+		07CA0D360E0CCF9C000BD96E /* ConnectionSheet.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectionSheet.xib; sourceTree = "<group>"; };
+		07CA0D3A0E0CD86D000BD96E /* ConnectionSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionSheetController.h; sourceTree = "<group>"; };
+		07CA0D3B0E0CD86D000BD96E /* ConnectionSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionSheetController.m; sourceTree = "<group>"; };
 		07DAE0700E05110B0020DBEB /* WizTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizTextField.h; sourceTree = "<group>"; };
 		07DAE0710E05110B0020DBEB /* WizTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizTextField.m; sourceTree = "<group>"; };
 		07DD94010D9E206000FFFDDA /* WizConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizConnect.h; sourceTree = "<group>"; };
@@ -138,6 +146,10 @@
 				071313140DF8004A003103CC /* Prefs.m */,
 				07DAE0700E05110B0020DBEB /* WizTextField.h */,
 				07DAE0710E05110B0020DBEB /* WizTextField.m */,
+				070774CC0E0BB35300924506 /* WizUPnP.h */,
+				070774CD0E0BB35300924506 /* WizUPnP.m */,
+				07CA0D3A0E0CD86D000BD96E /* ConnectionSheetController.h */,
+				07CA0D3B0E0CD86D000BD96E /* ConnectionSheetController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -199,6 +211,7 @@
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 				070866800DB8CB920062D875 /* QueuedSubview.nib */,
 				07C4A4170DAF82E9006901D5 /* DownloadSubview.nib */,
+				07CA0D360E0CCF9C000BD96E /* ConnectionSheet.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -263,6 +276,7 @@
 				070866810DB8CB920062D875 /* QueuedSubview.nib in Resources */,
 				0764D5F50DDB0D9C004C5AEF /* action_stop.png in Resources */,
 				07ED53340DF01D9C00F2D94D /* APPL.icns in Resources */,
+				07CA0D370E0CCF9C000BD96E /* ConnectionSheet.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +303,8 @@
 				071313080DF6BF48003103CC /* PrefController.m in Sources */,
 				071313150DF8004A003103CC /* Prefs.m in Sources */,
 				07DAE0720E05110B0020DBEB /* WizTextField.m in Sources */,
+				070774CE0E0BB35300924506 /* WizUPnP.m in Sources */,
+				07CA0D3C0E0CD86D000BD96E /* ConnectionSheetController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

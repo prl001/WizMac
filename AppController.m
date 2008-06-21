@@ -28,6 +28,7 @@
 	self = [super init];
 	index = [[WizIndex alloc] initWithDelegate: self];
 	[index retain];
+
 	return self;
 }
 
@@ -36,51 +37,31 @@
 	[table setDataSource: index];
 	dlQueue = [WizDLQueue dlQueueWithDelegate: queueController];
 	[dlQueue retain];
-
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[host setStringValue: [defaults objectForKey:@"WizPrefIP"]];
-	[port setStringValue: [defaults objectForKey:@"WizPrefPort"]];
-
 	[[NSURLCache sharedURLCache] removeAllCachedResponses];
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
 	//automatically connect to last known host. If auto connect on startup is selected in the config.
 	if([defaults boolForKey:@"WizPrefAutoConnectOnStartup"] == YES)
-		[self connectToWiz: self];
-}
-
-- (IBAction)connectToWiz:(id)sender
-{
-	WizConnect *wizConnect;
-
-	wizConnect = [[WizConnect alloc] initWithHost: [host stringValue] port: [port intValue]];
-	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
-	[defaults setObject:[host stringValue] forKey:@"WizPrefIP"];
-	[defaults setObject:[port stringValue] forKey:@"WizPrefPort"];
-
-	[window setTitle: [NSString stringWithFormat: @"WizMac (%@:%d)", [wizConnect host], [wizConnect port]]];
-
-	[index setWizConnect: wizConnect];
-	if([index getIndex] == TRUE)
 	{
-		[statusLabel setStringValue: @"Retrieving file list."];
-		[statusLabel setHidden: false];
-		[spinner setHidden: false];
-		[spinner startAnimation: self];
+	//	[self connectToWiz: self]; //FIXME we need to handle connect from last know host. either upnp or manual.
 	}
 	else
-	{
-		[statusLabel setStringValue: @"Error connecting to host."];
-		[statusLabel setHidden: false];
-		[spinner setHidden: false];
-	}
+		[self showConnectionSheet:self];
 }
 
 - (IBAction)downloadFile:(id)sender
 {
 	[dlQueue addWizFiles: [index getWizFilesFromIndexSet: [table selectedRowIndexes]]];
 	[table deselectAll: self];
+}
+
+-(IBAction)showConnectionSheet:(id)sender
+{
+	[connectionSheetContoller showSheet: window withDelegate: self];
 }
 
 //WizIndex delegate methods
@@ -112,6 +93,37 @@
 - (void) alertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
 {
 	return;
+}
+
+//WizConnectProtocol
+-(void)newConnectionWithName: (NSString *) name host: (NSString *) host port: (int) port
+{
+	WizConnect *wizConnect;
+
+	wizConnect = [[WizConnect alloc] initWithHost: host port: port];
+
+	[window setTitle: [NSString stringWithFormat: @"WizMac - %@ (%@:%d)", name, host, port]];
+
+	[index setWizConnect: wizConnect];
+	if([index getIndex] == TRUE)
+	{
+		[statusLabel setStringValue: @"Retrieving file list."];
+		[statusLabel setHidden: false];
+		[spinner setHidden: false];
+		[spinner startAnimation: self];
+		
+		//save default connection values
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		[defaults setObject: name forKey:@"WizPrefDeviceName"];
+		[defaults setObject: host forKey:@"WizPrefIP"];
+		[defaults setObject: [NSString stringWithFormat: @"%d", port] forKey:@"WizPrefPort"];
+	}
+	else
+	{
+		[statusLabel setStringValue: @"Error connecting to host."];
+		[statusLabel setHidden: false];
+		[spinner setHidden: false];
+	}
 }
 
 @end

@@ -46,4 +46,5 @@ int port;
 
 @protocol WizConnectProtocol
 -(void)newConnectionWithName: (NSString *) name host: (NSString *) host port: (int) port;
+-(void)failedToFindRequestedDevice: (NSString *)deviceName;
 @end

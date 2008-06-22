@@ -60,7 +60,7 @@ id delegate;
 @end
 
 @protocol WizUPnPDelegate
--(void) WizUPnPFinishedSearching: (WizUPnP *)upnp;
--(void) WizUPnPFoundNewDevice: (WizUPnP *)upnp;
+-(void) WizUPnPFinishedSearching: (WizUPnP *)aUpnp;
+-(void) WizUPnPFoundNewDevice: (WizUPnP *)aUpnp;
 @end
 

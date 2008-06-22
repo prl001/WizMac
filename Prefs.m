@@ -37,8 +37,8 @@
 +(void)initialize
 {
 	//load defaults
-	NSArray *keys = [NSArray arrayWithObjects: @"WizPrefIP", @"WizPrefPort", @"WizPrefDownloadDir", @"WizPrefFilenameFormat", @"WizPrefAutoConnectOnStartup", nil];
-	NSArray *objects = [NSArray arrayWithObjects: @"192.168.1.4", @"49152", @"~/Desktop", @"!_@_yyyyMMdd_HHmm.'ts'", @"NO", nil];
+	NSArray *keys = [NSArray arrayWithObjects: @"WizPrefUPnPName", @"WizPrefIP", @"WizPrefPort", @"WizPrefDownloadDir", @"WizPrefFilenameFormat", @"WizPrefAutoConnectOnStartup", nil];
+	NSArray *objects = [NSArray arrayWithObjects: @"", @"192.168.1.4", @"49152", @"~/Desktop", @"!_@_yyyyMMdd_HHmm.'ts'", @"NO", nil];
 	
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *appDefaults = [NSDictionary dictionaryWithObjects: objects forKeys: keys];

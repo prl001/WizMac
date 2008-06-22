@@ -47,7 +47,27 @@
 	//automatically connect to last known host. If auto connect on startup is selected in the config.
 	if([defaults boolForKey:@"WizPrefAutoConnectOnStartup"] == YES)
 	{
-	//	[self connectToWiz: self]; //FIXME we need to handle connect from last know host. either upnp or manual.
+
+		[statusLabel setHidden: false];
+		[spinner setHidden: false];
+		[spinner setIndeterminate: YES];
+		[spinner startAnimation: self];
+
+
+		NSString *device = [defaults objectForKey:@"WizPrefUPnPName"];
+		if([device isEqualToString: @""] == NO) //Last connection was via uPnP discovery
+		{
+			[statusLabel setStringValue: [NSString stringWithFormat: @"Searching for device named '%@'.", device]];
+			//ask the connection manager to find and connect based on upnp device name.
+			[connectionSheetContoller requestDeviceConnection: device delegate: self];  
+		}
+		else //Last connection was done manually
+		{
+			NSString *host = [defaults objectForKey:@"WizPrefIP"];
+			NSString *port = [defaults objectForKey:@"WizPrefPort"];
+			[statusLabel setStringValue: [NSString stringWithFormat: @"Connecting to %@ Port: %@", host, port]];
+			[self newConnectionWithName: @"" host: host port: [port intValue]];
+		}
 	}
 	else
 		[self showConnectionSheet:self];
@@ -68,6 +88,10 @@
 -(void) indexUpdated
 {
 	[statusLabel setStringValue: [NSString stringWithFormat: @"Retrieving file list. (%d/%d)", [index count], [index totalFiles]]];
+
+	if([spinner isIndeterminate])
+		[spinner setIndeterminate: NO];
+
 	[spinner setDoubleValue: (double)[index count] / (double)[index totalFiles]];
 	[index sortIndexForTableView: table];
 }
@@ -110,8 +134,9 @@
 		[statusLabel setStringValue: @"Retrieving file list."];
 		[statusLabel setHidden: false];
 		[spinner setHidden: false];
+		[spinner setIndeterminate: YES];
 		[spinner startAnimation: self];
-		
+
 		//save default connection values
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		[defaults setObject: name forKey:@"WizPrefDeviceName"];
@@ -124,6 +149,22 @@
 		[statusLabel setHidden: false];
 		[spinner setHidden: false];
 	}
+}
+
+-(void)failedToFindRequestedDevice: (NSString *)deviceName
+{
+	//Alert the user that we failed to find requested device.
+
+	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+	[userInfo setValue: @"Error: Connecting to device." forKey: NSLocalizedDescriptionKey];
+	[userInfo setValue: [NSString stringWithFormat: @"Could not find device named '%@'", deviceName] forKey:  NSLocalizedRecoverySuggestionErrorKey];
+	
+	NSError *error = [NSError errorWithDomain: @"WizErrorDomain" code: 0 userInfo: userInfo];
+	[NSApp presentError: error];
+	
+	[statusLabel setHidden: true];
+	[spinner stopAnimation: self];
+	[spinner setHidden: true];
 }
 
 @end

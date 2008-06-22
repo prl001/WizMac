@@ -46,7 +46,6 @@ static const char discoverCmdStr[] = "M-SEARCH * HTTP/1.1\r\nHost:239.255.255.25
 	devices = [NSMutableArray arrayWithCapacity: 1];
 	[devices retain];
 	
-	//[NSThread detachNewThreadSelector: @selector(startDeviceDiscoveryThread:) toTarget: self withObject: nil];
 	[self refreshDeviceList];
 	
 	return self;
@@ -140,7 +139,8 @@ static const char discoverCmdStr[] = "M-SEARCH * HTTP/1.1\r\nHost:239.255.255.25
 		return NO;
 	}
 	
-	setsockopt(sock, IPPROTO_IP, IP_MULTICAST_LOOP, 0, 1);
+	//set our socket to receive its own messages.
+	//setsockopt(sock, IPPROTO_IP, IP_MULTICAST_LOOP, 0, 1);
 
 	return YES;
 }
@@ -290,6 +290,21 @@ static const char discoverCmdStr[] = "M-SEARCH * HTTP/1.1\r\nHost:239.255.255.25
 
 -(NSDictionary *)getDeviceByName: (NSString *) deviceName
 {
+	NSDictionary *device;
+
+	if([devices count] > 0)
+	{
+		NSEnumerator *e = [devices objectEnumerator];
+
+		for(;device = [e nextObject];)
+		{
+			if([[device objectForKey: @"device"] isEqualToString: deviceName])
+			{
+				return device;
+			}
+		}
+	}
+
 	return nil;
 }
 
@@ -315,6 +330,18 @@ static const char discoverCmdStr[] = "M-SEARCH * HTTP/1.1\r\nHost:239.255.255.25
 - (void)tableView:(NSTableView *)aTableView sortDescriptorsDidChange:(NSArray *)oldDescriptors
 {
 	//[self sortIndexForTableView: aTableView];
+}
+
+-(void)dealloc
+{
+	if([self isSearching])
+		[self closeSocket];
+
+	[delegate release];
+	[devices release];
+
+	[super dealloc];
+	
 }
 
 @end

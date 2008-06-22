@@ -24,6 +24,8 @@
 #import "ConnectionSheetController.h"
 #import "WizConnect.h"
 
+#define WIZ_DEVICEREQUEST_TIMEOUT 60
+
 @implementation ConnectionSheetController
 
 -(id) init
@@ -32,6 +34,8 @@
 
 	upnp = [[WizUPnP alloc] initWithDelegate: self];
 	[upnp retain];
+
+	deviceRequest = nil;
 
 	[NSBundle loadNibNamed: @"ConnectionSheet" owner: self];
 
@@ -45,6 +49,40 @@
 	[hostField setStringValue: [defaults objectForKey:@"WizPrefIP"]];
 	[portField setStringValue: [defaults objectForKey:@"WizPrefPort"]];
 
+}
+
+-(void) requestDeviceConnection: (NSString *) deviceName delegate: (id) d
+{
+	if(deviceRequest)
+		[deviceRequest release];
+	
+	NSArray *objs = [NSArray arrayWithObjects: deviceName, d, nil];
+	NSArray *keys = [NSArray arrayWithObjects: @"deviceName", @"delegate", nil];
+	
+	deviceRequest = [NSDictionary dictionaryWithObjects: objs forKeys: keys];
+	[deviceRequest retain];
+	
+	[NSTimer scheduledTimerWithTimeInterval: WIZ_DEVICEREQUEST_TIMEOUT target: self selector: @selector(deviceRequestTimeoutCallback:) userInfo: deviceRequest repeats: YES];
+}
+
+-(void) deviceRequestTimeoutCallback: (NSTimer *) aTimer
+{
+	if([aTimer userInfo] == deviceRequest)
+	{
+		//inform the delegate
+		[[deviceRequest objectForKey: @"delegate"] failedToFindRequestedDevice: [deviceRequest objectForKey: @"deviceName"]];
+	}
+
+	[self removeDeviceRequest];
+}
+
+-(void) removeDeviceRequest
+{
+	if(deviceRequest != nil)
+	{
+		[deviceRequest release];
+		deviceRequest = nil;
+	}
 }
 
 -(void) showSheet:( NSWindow *)window withDelegate: (id) d
@@ -86,9 +124,13 @@
 
 -(IBAction)connect: (id) sender
 {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSTabViewItem *item = [tabView selectedTabViewItem];
 	if([[item identifier] isEqualToString: @"manual"])
 	{
+		[defaults setObject:[hostField stringValue] forKey:@"WizPrefIP"];
+		[defaults setObject:[portField stringValue] forKey:@"WizPrefPort"];
+
 		[delegate newConnectionWithName: @"" host: [hostField stringValue] port: [portField intValue]];
 	}
 	else
@@ -97,14 +139,13 @@
 			return;
 
 		NSDictionary *device = [upnp getDeviceAtRow: [table selectedRow]];
+		
+		[defaults setObject:[device objectForKey: @"device"] forKey:@"WizPrefUPnPName"];
+		
 		[delegate newConnectionWithName: [device objectForKey: @"device"] host: [device objectForKey: @"host"] port: [[device objectForKey: @"port"] intValue]];
 	}
 
-//	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-//	[defaults setObject:[host stringValue] forKey:@"WizPrefIP"];
-//	[defaults setObject:[port stringValue] forKey:@"WizPrefPort"];
-
+	[self removeDeviceRequest];
 	[self closeSheet: self];
 }
 
@@ -120,19 +161,30 @@
 	delegate = nil;
 }
 
--(void) WizUPnPFinishedSearching: (WizUPnP *)upnp
+-(void) WizUPnPFinishedSearching: (WizUPnP *)aUpnp
 {
 	[self updateSearchLabel];
 }
 
--(void) WizUPnPFoundNewDevice: (WizUPnP *)upnp
+-(void) WizUPnPFoundNewDevice: (WizUPnP *)aUpnp
 {
+	if(deviceRequest)
+	{
+		NSDictionary *device = [upnp getDeviceByName: [deviceRequest objectForKey: @"deviceName"]];
+		if(device != nil)
+		{
+			[[deviceRequest objectForKey: @"delegate"] newConnectionWithName: [device objectForKey: @"device"] host: [device objectForKey: @"host"] port: [[device objectForKey: @"port"] intValue]];
+			[self removeDeviceRequest];
+		}
+	}
+
 	[table reloadData];
 }
 
 -(void)dealloc
 {
 	[upnp release];
+	[self removeDeviceRequest];
 	[super dealloc];
 }
 

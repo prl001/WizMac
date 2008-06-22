@@ -1,10 +1,7 @@
 Add size and duration of download to complete infoLabel
-Add new connection sheet.
 Add toolbar.
 Add config
 -download style. eg (wiz or ts)
--auto connect 
 Create WizMac icon
-Add host upnp auto discovery.
 Handle connection errors. Gracefull error, retries, resume from error.
 shift-download to add selected files in reverse order.

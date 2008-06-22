@@ -39,7 +39,12 @@ IBOutlet NSProgressIndicator *searchSpinner;
 WizUPnP *upnp;
 
 id delegate;
+NSDictionary *deviceRequest;
 }
+
+-(void) requestDeviceConnection: (NSString *) deviceName delegate: (id) d;
+-(void) deviceRequestTimeoutCallback: (NSTimer *) aTimer;
+-(void) removeDeviceRequest;
 
 -(void) showSheet:( NSWindow *)window withDelegate: (id) d;
 -(IBAction)closeSheet: (id) sender;
@@ -53,6 +58,6 @@ id delegate;
 -(void) didEndSheet:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 
 //WizUPnPDelegate methods
--(void) WizUPnPFinishedSearching: (WizUPnP *)upnp;
--(void) WizUPnPFoundNewDevice: (WizUPnP *)upnp;
+-(void) WizUPnPFinishedSearching: (WizUPnP *)aUpnp;
+-(void) WizUPnPFoundNewDevice: (WizUPnP *)aUpnp;
 @end

@@ -85,10 +85,10 @@
 		eta = [NSString stringWithFormat: @"%ds", secondsToGo];
 	
 	if([wizFileDownload status] == WizFileDownload_InProgress)
-		[infoLabel setStringValue: [NSString stringWithFormat: @"%.1Lf/%.1LfMB  (%.1fKB/s) ETA %@", ((double long)bytesDownloaded / (1024 * 1024)), (long double)[wizFileDownload filesize] / (long double)(1024 * 1024),(float)kbps,eta]];
+		[infoLabel setStringValue: [NSString stringWithFormat: @"%.1f/%.1fMB  (%.1fKB/s) ETA %@", (float)((double long)bytesDownloaded / (double long)(1024 * 1024)), (float)((long double)[wizFileDownload filesize] / (long double)(1024 * 1024)),(float)kbps,eta]];
 	else // WizFileDownload_Paused
 	{
-		[infoLabel setStringValue: [NSString stringWithFormat: @"%.1Lf/%.1LfMB (Paused)", ((double long)bytesDownloaded / (1024 * 1024)), ((double long)[wizFileDownload filesize] / (1024 * 1024))]];
+		[infoLabel setStringValue: [NSString stringWithFormat: @"%.1f/%.1fMB (Paused)", (float)((double long)bytesDownloaded / (double long)(1024 * 1024)), (float)((double long)[wizFileDownload filesize] / (double long)(1024 * 1024))]];
 		// change to refresh icon.
 		[pauseButton setImage: [NSImage imageNamed: @"action_refresh.png"]];
 	}

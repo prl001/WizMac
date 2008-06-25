@@ -2,6 +2,5 @@ Add size and duration of download to complete infoLabel
 Add toolbar.
 Add config
 -download style. eg (wiz or ts)
-Create WizMac icon
 Handle connection errors. Gracefull error, retries, resume from error.
 shift-download to add selected files in reverse order.

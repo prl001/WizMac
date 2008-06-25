@@ -178,9 +178,9 @@
 -(NSString *)filesizeString
 {
 	if(filesize > (1024 * 1024 * 1024))
-		return [NSString stringWithFormat: @"%.1LfGB", (long double)filesize / (long double)(1024 * 1024 * 1024)];
+		return [NSString stringWithFormat: @"%.1fGB", (float)((long double)filesize / (long double)(1024 * 1024 * 1024))];
 
-	return [NSString stringWithFormat: @"%.1LfMB", (long double)filesize / (long double)(1024 * 1024)];
+	return [NSString stringWithFormat: @"%.1fMB", (float)((long double)filesize / (long double)(1024 * 1024))];
 }
 
 -(int) numberOfChunks

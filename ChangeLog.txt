@@ -1,0 +1,13 @@
+2008-06-28  Eric Fry <efry at users.sourceforge.net>
+	* Version 0.6
+	* Fixed download display strings when used on 10.4.x It wasn't handling %Lf
+	  formatters. Thanks to em5500 for spotting that one.
+	* Added a 2 second pause before retrying a lost connection.
+	* Added new message while waiting to retry a lost connection.
+	* Removed G5 tuning on the PowerPC arch.
+	* Added new '#' formatter to filename format string. This can be used to
+	  output the recording type. Either 'tvwiz' or 'radwiz'
+	* Added this new change log
+
+2008-06-24  Eric Fry <efry at users.sourceforge.net>
+	* Initial Release version 0.5

@@ -27,6 +27,7 @@
 @interface WizFile : NSObject {
 
  NSString *dir, *filename, *file, *svcName, *evtName;
+ NSString *type;
  NSDate *date;
  unsigned long start;
  int last;
@@ -48,6 +49,7 @@
 -(NSString *) localFilenameFromFormatString;
 -(void) parseFilenameForSpecialChars: (NSMutableString *) s;
 -(NSString *) file;
+-(NSString *) type;
 -(NSString *) svcName;
 -(NSString *) evtName;
 -(NSDate *) date;

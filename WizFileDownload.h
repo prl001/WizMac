@@ -33,7 +33,8 @@ typedef enum
 	WizFileDownload_Paused,
 	WizFileDownload_Complete,
 	WizFileDownload_Cancelled,
-	WizFileDownload_Error
+	WizFileDownload_Error,
+	WizFileDownload_Retrying
 } WizFileDownloadStatus;
 
 #define WIZ_NUM_SAMPLES 10
@@ -110,7 +111,7 @@ typedef struct
 -(void) cancelDownload;
 -(void) pauseDownload;
 -(void) resumeDownload;
--(void) retryDownloadAfterError;
+-(void) retryDownloadAfterError: (NSTimer *) aTimer;
 
 -(void)failWithErrorTitle: (NSString *)errorTitle errorDesc: (NSString *)errorDesc errorCode: (int) errorCode;
 

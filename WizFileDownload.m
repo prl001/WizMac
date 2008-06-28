@@ -145,7 +145,7 @@
 
 -(bool) isDownloading
 {
-	if(status == WizFileDownload_InProgress || status == WizFileDownload_Paused)
+	if(status == WizFileDownload_InProgress || status == WizFileDownload_Paused || status == WizFileDownload_Retrying)
 		return YES;
 
 	return NO;
@@ -322,13 +322,14 @@ NSLog(@"truncPath = %@", truncPath);
 -(void) downloadPartialChunk: (unsigned long long) fsize
 {
 	NSString *path;
-	long double tmp_index = (long double)fsize / WIZ_CHUNKSIZE;
-	trunc_index = (int)floor((double)tmp_index);
+	//long double tmp_index = (long double)fsize / WIZ_CHUNKSIZE;
+	//trunc_index = (int)floor((double)tmp_index);
 	int num_chunks = [wizFile numberOfChunks];
 	int startOffset;
 	int i;
 	unsigned long long trunc_size = 0;
 	unsigned int chunk_size;
+	unsigned int offset_in_file;
 	unsigned int length;
 
 	unsigned char *bytes = (unsigned char *)[trunc bytes];
@@ -338,12 +339,16 @@ NSLog(@"truncPath = %@", truncPath);
 	for(i=0;i < num_chunks;i++)
 	{
 		chunk_size = EndianU32_LtoN(*(UInt32 *)&bytes[i * 24 + 0x14]);
+		offset_in_file = EndianU32_LtoN(*(UInt32 *)&bytes[i * 24 + 0xC]);
+
+		NSLog(@"trunc_size = %qu chunk_size = %d offset_in_chunk = %d", trunc_size + chunk_size, chunk_size, offset_in_file);
 		if((trunc_size + chunk_size) > fsize)
 		{
 			trunc_index = i;
-			startOffset = (int)(fsize - trunc_size);
+			startOffset = (int)(fsize - trunc_size); //the amount we've already downloaded in this chunk.
 			length = chunk_size - startOffset;
-			startOffset += EndianU32_LtoN(*(UInt32 *)&bytes[i * 24 + 0xC]); //offset in chunk.
+			startOffset += offset_in_file;
+			
 			break;
 		}
 		trunc_size += chunk_size;
@@ -353,7 +358,7 @@ NSLog(@"truncPath = %@", truncPath);
 
 	path = [NSString stringWithFormat: @"%@/%04d", [WizConnect urlEncode: [wizFile remotePath]], chunk_number];
 
-	NSLog(@"Downloading: %@ fsize = %qu startOffset = %d chunk_size = %d", path, fsize, startOffset, chunk_size);
+	NSLog(@"Downloading: %@\n fsize = %qu startOffset = %d chunk_size = %d", path, fsize, startOffset, chunk_size);
 	
 	//data = [NSMutableData dataWithLength: 33554432];
 	
@@ -448,8 +453,10 @@ NSLog(@"truncPath = %@", truncPath);
 	[delegate downloadWasResumed: self];
 }
 
--(void) retryDownloadAfterError
+-(void) retryDownloadAfterError: (NSTimer *) aTimer
 {
+	status = WizFileDownload_InProgress;
+
 	if(tsFile == nil)
 	{
 		[self downloadTrunc];
@@ -483,7 +490,10 @@ NSLog(@"truncPath = %@", truncPath);
 		[delegate downloadFailed: self withError: error];
 	}
 	else
-		[self retryDownloadAfterError];
+	{
+		status = WizFileDownload_Retrying;
+		[NSTimer scheduledTimerWithTimeInterval: 2.0 target: self selector: @selector(retryDownloadAfterError:) userInfo: nil repeats: NO];
+	}
 }
 
 -(void)wizDownloadDidFinishLoading: (WizConnectDownload *) download

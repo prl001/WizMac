@@ -30,17 +30,24 @@
 	self = [super init];
 	return self;
 }
+
 -(id)initWithFilename: (NSString *)f header: (NSMutableData *) header trunc: (NSMutableData *) trunc wizConnect: (WizConnect *) wc;
 {
 	NSRange range;
 	self = [self init];
-	[filename autorelease];
+
 	filename = [f copy];
 	[filename retain];
 
 	wizConnect = wc;
 	[wizConnect retain];
 	
+	range = [filename rangeOfCharacterFromSet: [NSCharacterSet characterSetWithCharactersInString: @"."] options: NSBackwardsSearch];
+	range.location++;
+	range.length = [filename length] - range.location;
+	type = [filename substringWithRange: range];
+	[type retain];
+
 	range = [filename rangeOfCharacterFromSet: [NSCharacterSet characterSetWithCharactersInString: @"/"] options: NSBackwardsSearch];
 	range.location++;
 	range.length = [filename length] - range.location;
@@ -136,6 +143,7 @@
 		{
 			case '!' : [s replaceCharactersInRange: NSMakeRange(i,1) withString: svcName]; i += ([svcName length] - 1); break;
 			case '@' : [s replaceCharactersInRange: NSMakeRange(i,1) withString: evtName]; i += ([evtName length] - 1); break;
+			case '#' : [s replaceCharactersInRange: NSMakeRange(i,1) withString: type]; i += ([type length] - 1); break;
 		}
 	}
 }
@@ -143,6 +151,11 @@
 -(NSString *) file
 {
 	return file;
+}
+
+-(NSString *) type
+{
+	return type;
 }
 
 -(NSString *) svcName
@@ -223,6 +236,11 @@
 
 -(void)dealloc
 {
+	[filename retain];
+	[wizConnect retain];
+	[file retain];
+	[type release];
+
 	[super dealloc];
 }
 

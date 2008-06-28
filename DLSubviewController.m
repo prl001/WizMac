@@ -84,14 +84,28 @@
 	else
 		eta = [NSString stringWithFormat: @"%ds", secondsToGo];
 	
-	if([wizFileDownload status] == WizFileDownload_InProgress)
-		[infoLabel setStringValue: [NSString stringWithFormat: @"%.1f/%.1fMB  (%.1fKB/s) ETA %@", (float)((double long)bytesDownloaded / (double long)(1024 * 1024)), (float)((long double)[wizFileDownload filesize] / (long double)(1024 * 1024)),(float)kbps,eta]];
-	else // WizFileDownload_Paused
+	NSString *progressDesc = [NSString stringWithFormat: @"%.1f/%.1fMB", (float)((double long)bytesDownloaded / (double long)(1024 * 1024)), (float)((long double)[wizFileDownload filesize] / (long double)(1024 * 1024))];
+	
+	switch([wizFileDownload status])
 	{
-		[infoLabel setStringValue: [NSString stringWithFormat: @"%.1f/%.1fMB (Paused)", (float)((double long)bytesDownloaded / (double long)(1024 * 1024)), (float)((double long)[wizFileDownload filesize] / (double long)(1024 * 1024))]];
-		// change to refresh icon.
-		[pauseButton setImage: [NSImage imageNamed: @"action_refresh.png"]];
+		case WizFileDownload_InProgress : [infoLabel setStringValue: [NSString stringWithFormat: @"%@  (%.1fKB/s) ETA %@", progressDesc, (float)kbps, eta]];
+			break;
+
+		case WizFileDownload_Paused :
+			[infoLabel setStringValue: [NSString stringWithFormat: @"%@ (Paused)", progressDesc]];
+			// change to refresh icon.
+			[pauseButton setImage: [NSImage imageNamed: @"action_refresh.png"]];
+			break;
+
+		case WizFileDownload_Retrying :
+			[infoLabel setStringValue: [NSString stringWithFormat: @"%@ (Lost Connection: Retrying)", progressDesc]];
+			break;
+
+		default :
+			[infoLabel setStringValue: progressDesc];
+			break;
 	}
+
 	return;
 }
 

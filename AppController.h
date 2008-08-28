@@ -58,4 +58,7 @@ WizDLQueue *dlQueue;
 //WizConnectProtocol
 -(void)newConnectionWithName: (NSString *) name host: (NSString *) host port: (int) port;
 -(void)failedToFindRequestedDevice: (NSString *) deviceName;
+
+//Drag and drop on the dock icon
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)path;
 @end

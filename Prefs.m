@@ -37,8 +37,8 @@
 +(void)initialize
 {
 	//load defaults
-	NSArray *keys = [NSArray arrayWithObjects: @"WizPrefUPnPName", @"WizPrefIP", @"WizPrefPort", @"WizPrefDownloadDir", @"WizPrefFilenameFormat", @"WizPrefAutoConnectOnStartup", nil];
-	NSArray *objects = [NSArray arrayWithObjects: @"", @"192.168.1.4", @"49152", @"~/Desktop", @"!_@_yyyyMMdd_HHmm.'ts'", @"NO", nil];
+	NSArray *keys = [NSArray arrayWithObjects: @"WizPrefUPnPName", @"WizPrefIP", @"WizPrefPort", @"WizPrefDownloadDir", @"WizPrefDownloadUseTSFormat", @"WizPrefFilenameFormat", @"WizPrefFilenameFormatWiz", @"WizPrefAutoConnectOnStartup", nil];
+	NSArray *objects = [NSArray arrayWithObjects: @"", @"192.168.1.4", @"49152", @"~/Desktop", @"YES", @"!_@_yyyyMMdd_HHmm.'ts'", @"!_@_yyyyMMdd_HHmm.#", @"NO", nil];
 	
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *appDefaults = [NSDictionary dictionaryWithObjects: objects forKeys: keys];
@@ -49,11 +49,8 @@
 
 -(void)setDownloadDir: (NSString *)aDownloadDir
 {
-	[downloadDir autorelease];
-	downloadDir = [aDownloadDir copy];
-	[downloadDir retain];
 	
-	[defaults setObject: downloadDir forKey:@"WizPrefDownloadDir"];
+	[defaults setObject: aDownloadDir forKey:@"WizPrefDownloadDir"];
 }
 
 -(NSString *) downloadDir
@@ -61,18 +58,34 @@
 	return [defaults objectForKey:@"WizPrefDownloadDir"];
 }
 
--(void)setFilenameFormat: (NSString *)aFilenameFormat
+-(void)setUseTSFormat: (BOOL) val
 {
-	[filenameFormat autorelease];
-	filenameFormat = [aFilenameFormat copy];
-	[filenameFormat retain];
-	
-	[defaults setObject: filenameFormat forKey:@"WizPrefFilenameFormat"];
+	[defaults setBool: val forKey: @"WizPrefDownloadUseTSFormat"];
+}
+
+-(BOOL)useTSFormat
+{
+	return [defaults boolForKey: @"WizPrefDownloadUseTSFormat"];
+}
+
+-(void)setFilenameFormat: (NSString *)aFilenameFormat
+{	
+	[defaults setObject: aFilenameFormat forKey:@"WizPrefFilenameFormat"];
+}
+
+-(void)setFilenameFormatWiz: (NSString *)aFilenameFormat
+{	
+	[defaults setObject: aFilenameFormat forKey:@"WizPrefFilenameFormatWiz"];
 }
 
 -(NSString *) filenameFormat
 {
 	return [defaults objectForKey:@"WizPrefFilenameFormat"];
+}
+
+-(NSString *) filenameFormatWiz
+{
+	return [defaults objectForKey:@"WizPrefFilenameFormatWiz"];
 }
 
 -(void)setAutoConnectOnStartup: (BOOL) val

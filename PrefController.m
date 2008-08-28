@@ -81,6 +81,8 @@
 {
 	[downloadDir setStringValue: [prefs downloadDir]];
 	[filenameFormat setStringValue: [prefs filenameFormat]];
+	[filenameFormatWiz setStringValue: [prefs filenameFormatWiz]];
+	[fileFormatType selectCellWithTag: [prefs useTSFormat] ? 1 : 0];
 	[autoConnectOnStartup setState: [prefs autoConnectOnStartup] ? NSOnState : NSOffState];
 }
 
@@ -88,6 +90,8 @@
 {
 	[prefs setDownloadDir: [downloadDir stringValue]];
 	[prefs setFilenameFormat: [filenameFormat stringValue]];
+	[prefs setFilenameFormatWiz: [filenameFormatWiz stringValue]];
+	[prefs setUseTSFormat: [[fileFormatType selectedCell] tag] == 1 ? YES : NO];
 	[prefs setAutoConnectOnStartup: [autoConnectOnStartup state] == NSOnState ? YES : NO];
 }
 

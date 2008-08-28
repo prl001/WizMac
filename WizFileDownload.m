@@ -37,11 +37,13 @@
 {
 	self = [super init];
 	wizFile = nil;
-	tsFile = nil;
+	dataFile = nil;
 	delegate = nil;
 	wizDownload = nil;
 	trunc = nil;
 	resumeFromPartialDownload = YES;
+	makeTS = YES;
+
 	status = WizFileDownload_New; 
 
 	[self setDownloadPath: @""];
@@ -206,6 +208,7 @@
 	if([self isDownloading] == YES)
 		return NO;
 
+	makeTS = [[NSUserDefaults standardUserDefaults] boolForKey: @"WizPrefDownloadUseTSFormat"];
 	status = WizFileDownload_InProgress;
 
 	trunc = [NSMutableData dataWithLength: 4028];
@@ -227,49 +230,227 @@ NSLog(@"truncPath = %@", truncPath);
 	return;
 }
 
--(void) downloadTS
+-(void) downloadHeader
+{
+	if([self setupPartialDownloadDir] == NO)
+		return;
+	
+	NSString *headerPath = [NSString stringWithFormat: @"%@/header.%@", [WizConnect urlEncode: [wizFile remotePath]], [wizFile type]];
+
+NSLog(@"headerPath = %@", headerPath);
+
+	[data release];
+	data = [NSMutableData dataWithLength: 4028];
+	[data retain];
+
+	[dataFilename release];
+	dataFilename = [NSString stringWithString: @"header"];
+	[dataFilename retain];
+		
+	wizDownload = [[wizFile wizConnect] getFileAsynchronouslyWithPath: headerPath data: data delegate: self];
+
+	return;
+}
+
+-(void) downloadStat
+{
+	NSError *fileError = nil;
+
+	//save header file
+	NSLog([NSString stringWithFormat: @"%@/header.%@", partialDownloadDir, [wizFile type]]);
+	if([data writeToFile: [NSString stringWithFormat: @"%@/header.%@", partialDownloadDir, [wizFile type]] options:  NSAtomicWrite error: &fileError]  == NO)
+		return;
+
+	NSString *statPath = [NSString stringWithFormat: @"%@/stat", [WizConnect urlEncode: [wizFile remotePath]]];
+
+NSLog(@"statPath = %@", statPath);
+
+	[data release];
+	data = [NSMutableData dataWithLength: 96];
+	[data retain];
+
+	[dataFilename release];
+	dataFilename = [NSString stringWithString: @"stat"];
+	[dataFilename retain];
+	
+	wizDownload = [[wizFile wizConnect] getFileAsynchronouslyWithPath: statPath data: data delegate: self];
+
+	return;
+}
+
+-(BOOL) setupPartialDownloadDir
 {
 	NSError *fileError = nil;
 	NSFileManager *fm = [NSFileManager defaultManager];
+
 	trunc_index = 0;
 
-	dir = [NSString stringWithFormat: @"%@/%@.part", localPath, [wizFile localFilenameFromFormatString]];
-	[dir retain];
+	partialDownloadDir = [NSString stringWithFormat: @"%@/%@.part", localPath, [wizFile localFilenameFromFormatString]];
+	[partialDownloadDir retain];
 	
-	if([fm fileExistsAtPath: dir] == YES)
+	if([fm fileExistsAtPath: partialDownloadDir] == YES)
 	{
 		if(resumeFromPartialDownload == NO)
 		{
-			if([fm removeFileAtPath: dir handler: nil] == YES)
+			if([fm removeFileAtPath: partialDownloadDir handler: nil] == YES)
 			{
-				if([fm createDirectoryAtPath: dir attributes: nil] == NO) //create a new fresh dir
+				if([fm createDirectoryAtPath: partialDownloadDir attributes: nil] == NO) //create a new fresh dir
 				{
-					[self failWithErrorTitle: @"Creating partial download directory" errorDesc: dir errorCode: 0];
-					return;
+					[self failWithErrorTitle: @"Creating partial download directory" errorDesc: partialDownloadDir errorCode: 0];
+					return NO;
 				}
 			}
 			else
 			{
-				[self failWithErrorTitle: @"Deleting old download" errorDesc: dir errorCode: 0];
-				return;
+				[self failWithErrorTitle: @"Deleting old download" errorDesc: partialDownloadDir errorCode: 0];
+				return NO;
 			}
 		}
 	}
 	else
 	{
-		if([fm createDirectoryAtPath: dir attributes: nil] == NO)
+		if([fm createDirectoryAtPath: partialDownloadDir attributes: nil] == NO)
 		{
-			[self failWithErrorTitle: @"Creating partial download directory" errorDesc: dir errorCode: 0];
-			return;
+			[self failWithErrorTitle: @"Creating partial download directory" errorDesc: partialDownloadDir errorCode: 0];
+			return NO;
 		}
 	}
 	
 	//save trunc file
-	NSLog([NSString stringWithFormat: @"%@/trunc", dir]);
-	if([trunc writeToFile: [NSString stringWithFormat: @"%@/trunc", dir] options:  NSAtomicWrite error: &fileError]  == NO)
-		NSLog(@"ARgh!");
+	NSLog([NSString stringWithFormat: @"%@/trunc", partialDownloadDir]);
+	if([trunc writeToFile: [NSString stringWithFormat: @"%@/trunc", partialDownloadDir] options:  NSAtomicWrite error: &fileError]  == NO)
+		return NO;
 
-	NSString *datafile = [NSString stringWithFormat: @"%@/data.ts", dir];
+	return YES;
+}
+
+-(void) downloadWiz
+{
+	NSError *fileError = nil;
+	//save stat file
+	NSLog([NSString stringWithFormat: @"%@/stat", partialDownloadDir]);
+	if([data writeToFile: [NSString stringWithFormat: @"%@/stat", partialDownloadDir] options:  NSAtomicWrite error: &fileError]  == NO)
+		return;
+		
+	[dataFilename release];
+	dataFilename = [NSString stringWithString: @""];
+	[dataFilename retain];
+	
+	bytesDownloaded = 0;
+
+	downloadStartDate = [NSDate date];
+
+	[self downloadSelectChunk];
+
+	[self startDLRateCalc];
+
+}
+
+-(void) downloadSelectChunk
+{
+	NSFileManager *fm = [NSFileManager defaultManager];
+	NSString *path;
+	int num_chunks = [wizFile numberOfChunks];
+	int i;
+	unsigned int filesize = 0;
+	unsigned int chunk_size;
+	unsigned int offset_in_file;
+	unsigned int total_chunk_length;
+	int chunk_number;
+
+	unsigned char *bytes = (unsigned char *)[trunc bytes];
+
+	bytesDownloaded = 0;
+		
+	for(i=0;i < num_chunks;i++)
+	{
+		chunk_number = EndianU16_LtoN(*(UInt16 *)&bytes[trunc_index * 24 + 0x8]);
+		path = [NSString stringWithFormat: @"%@/%04d", partialDownloadDir, chunk_number];
+		chunk_size = EndianU32_LtoN(*(UInt32 *)&bytes[i * 24 + 0x14]);
+		offset_in_file = EndianU32_LtoN(*(UInt32 *)&bytes[i * 24 + 0xC]);
+		
+		total_chunk_length = chunk_size + offset_in_file;
+NSLog(@"Checking for %@", path);
+		if([fm fileExistsAtPath: path] == NO)
+		{
+			[self downloadNextChunk];
+			return;
+		}
+		else
+		{
+			NSDictionary *attr = [fm fileAttributesAtPath: path traverseLink: NO];
+			filesize = [attr fileSize];
+NSLog(@"Found with filesize = %d, need size to be %d", filesize, total_chunk_length); 
+			if(filesize < total_chunk_length)
+			{
+				bytesDownloaded += filesize;
+				[self downloadPartialChunk: chunk_number startOffset: filesize length: total_chunk_length - filesize];
+				return;
+			}
+		}
+
+		bytesDownloaded += total_chunk_length;
+		trunc_index++;
+	}
+
+	return;
+}
+
+-(void) downloadPartialChunk: (int) chunk_number startOffset: (unsigned int) offset length: (unsigned int) length
+{
+	NSString *path = [NSString stringWithFormat: @"%@/%04d", partialDownloadDir, chunk_number];
+	
+	[dataFile release];
+	dataFile = [NSFileHandle fileHandleForUpdatingAtPath: path];
+	[dataFile seekToEndOfFile];
+	[dataFile retain];
+
+	path = [NSString stringWithFormat: @"%@/%04d", [WizConnect urlEncode: [wizFile remotePath]], chunk_number];
+	
+	wizDownload = [[wizFile wizConnect] getFileAsynchronouslyWithPath: path appendToLocalFile: dataFile startOffset: offset maxLength: length delegate: self];
+	trunc_index++;
+}
+
+-(void) downloadNextChunk
+{
+	NSString *path;
+
+	unsigned char *bytes = (unsigned char *)[trunc bytes];
+	int chunk_number = EndianU16_LtoN(*(UInt16 *)&bytes[trunc_index * 24 + 0x8]);
+
+	path = [NSString stringWithFormat: @"%@/%04d", partialDownloadDir, chunk_number];
+
+	FILE *f = fopen([path cString], "w");
+	if(f == NULL)
+	{
+		[self failWithErrorTitle: @"Creating file" errorDesc: path errorCode: 0];
+		return;
+	}
+
+	fclose(f);
+
+	[dataFile release];
+	dataFile = [NSFileHandle fileHandleForUpdatingAtPath: path];
+	[dataFile seekToEndOfFile];
+	[dataFile retain];
+	
+	path = [NSString stringWithFormat: @"%@/%04d", [WizConnect urlEncode: [wizFile remotePath]], chunk_number];
+		
+	NSLog(@"Downloading: %d %@", trunc_index, path);
+
+	wizDownload = [[wizFile wizConnect] getFileAsynchronouslyWithPath: path appendToLocalFile: dataFile startOffset: 0 maxLength: 0 delegate: self];
+	trunc_index++;
+}
+
+-(void) downloadTS
+{
+	NSFileManager *fm = [NSFileManager defaultManager];
+
+
+	if([self setupPartialDownloadDir] == NO)
+		return;
+
+	NSString *datafile = [NSString stringWithFormat: @"%@/data.ts", partialDownloadDir];
 
 	if([fm fileExistsAtPath: datafile] == NO)
 	{
@@ -285,8 +466,8 @@ NSLog(@"truncPath = %@", truncPath);
 		fclose(f);
 	}
 
-	tsFile = [NSFileHandle fileHandleForUpdatingAtPath: datafile];
-	[tsFile retain];
+	dataFile = [NSFileHandle fileHandleForUpdatingAtPath: datafile];
+	[dataFile retain];
 
 	//unsigned char *bytes = (unsigned char *)[trunc bytes];
 
@@ -294,15 +475,15 @@ NSLog(@"truncPath = %@", truncPath);
 
 	downloadStartDate = [NSDate date];
 
-	[self downloadSelectChunk];
+	[self downloadTSSelectChunk];
 
 	[self startDLRateCalc];
 		
 }
 
--(void) downloadSelectChunk
+-(void) downloadTSSelectChunk
 {
-	unsigned long long dataFileSize = [tsFile seekToEndOfFile];
+	unsigned long long dataFileSize = [dataFile seekToEndOfFile];
 	if(dataFileSize == [wizFile filesize])
 	{
 		return [self finishDownload];
@@ -310,16 +491,16 @@ NSLog(@"truncPath = %@", truncPath);
 	
 	if(dataFileSize > 0)
 	{
-		[self downloadPartialChunk: dataFileSize];
+		[self downloadTSPartialChunk: dataFileSize];
 	}
 	else
-		[self downloadNextChunk];
+		[self downloadTSNextChunk];
 
 	return;
 }
 
 //resume downloading a partial chunk
--(void) downloadPartialChunk: (unsigned long long) fsize
+-(void) downloadTSPartialChunk: (unsigned long long) fsize
 {
 	NSString *path;
 	//long double tmp_index = (long double)fsize / WIZ_CHUNKSIZE;
@@ -362,11 +543,11 @@ NSLog(@"truncPath = %@", truncPath);
 	
 	//data = [NSMutableData dataWithLength: 33554432];
 	
-	wizDownload = [[wizFile wizConnect] getFileAsynchronouslyWithPath: path appendToLocalFile: tsFile startOffset: startOffset maxLength: length delegate: self];
+	wizDownload = [[wizFile wizConnect] getFileAsynchronouslyWithPath: path appendToLocalFile: dataFile startOffset: startOffset maxLength: length delegate: self];
 	trunc_index++;
 }
 
--(void) downloadNextChunk
+-(void) downloadTSNextChunk
 {
 	NSString *path;
 
@@ -388,29 +569,42 @@ NSLog(@"truncPath = %@", truncPath);
 	
 	//data = [NSMutableData dataWithLength: 33554432];
 	
-	wizDownload = [[wizFile wizConnect] getFileAsynchronouslyWithPath: path appendToLocalFile: tsFile startOffset: startOffset maxLength: length delegate: self];
+	wizDownload = [[wizFile wizConnect] getFileAsynchronouslyWithPath: path appendToLocalFile: dataFile startOffset: startOffset maxLength: length delegate: self];
 	trunc_index++;
 }
 
 -(void) finishDownload
 {
 	NSFileManager *fm = [NSFileManager defaultManager];
-	NSString *datafile = [NSString stringWithFormat: @"%@/data.ts", dir];
-	NSString *newTSFile = [dir  substringToIndex: [dir length] - 5]; //dir - '.part'
+
+	NSString *newFilename = [partialDownloadDir  substringToIndex: [partialDownloadDir length] - 5]; //partialDownloadDir - '.part'
 	
-
 	//remove existing file.
-	if([fm fileExistsAtPath: newTSFile])
-		[fm removeFileAtPath: newTSFile handler: nil];
+	if([fm fileExistsAtPath: newFilename])
+		[fm removeFileAtPath: newFilename handler: nil];
 
-	//rename data.ts and remove .part directory.
-	if([fm movePath: datafile toPath: newTSFile handler: nil] == YES)
-		[fm removeFileAtPath: dir handler: nil];
+	[dataFile closeFile];
+	[dataFile release];
+	dataFile = nil;
+					
+	if(makeTS)
+	{
+		NSString *tsDataFilename = [NSString stringWithFormat: @"%@/data.ts", partialDownloadDir];
+		
+		//rename data.ts and remove .part directory.
+		if([fm movePath: tsDataFilename toPath: newFilename handler: nil] == YES)
+			[fm removeFileAtPath: partialDownloadDir handler: nil];
+	}
+	else
+	{
+		[fm movePath: partialDownloadDir toPath: newFilename handler: nil];
+	}
+
 	
 	[trunc release];
 	trunc = nil;
-	[dir release];
-	dir = nil;
+	[partialDownloadDir release];
+	partialDownloadDir = nil;
 
 	status = WizFileDownload_Complete;
 
@@ -448,7 +642,7 @@ NSLog(@"truncPath = %@", truncPath);
 	
 	status = WizFileDownload_InProgress;
 	
-	[self downloadPartialChunk: bytesDownloaded];
+	[self downloadTSPartialChunk: bytesDownloaded];
 
 	[delegate downloadWasResumed: self];
 }
@@ -457,13 +651,16 @@ NSLog(@"truncPath = %@", truncPath);
 {
 	status = WizFileDownload_InProgress;
 
-	if(tsFile == nil)
+	if(dataFile == nil)
 	{
 		[self downloadTrunc];
 	}
 	else
 	{
-		[self downloadSelectChunk];
+		if(makeTS)
+			[self downloadTSSelectChunk];
+		else
+			[self downloadSelectChunk];
 	}
 	
 	return;
@@ -486,7 +683,7 @@ NSLog(@"truncPath = %@", truncPath);
 	if([[error domain] isEqualToString: @"WizErrorDomain"])
 	{
 		status = WizFileDownload_Error;
-		[tsFile closeFile];
+		[dataFile closeFile];
 		[delegate downloadFailed: self withError: error];
 	}
 	else
@@ -502,18 +699,31 @@ NSLog(@"truncPath = %@", truncPath);
 	NSLog(@"Bytes Downloaded = %llu", bytesDownloaded);
 	if([download data] == trunc)
 	{
-		[self downloadTS];
+		if(makeTS)
+			[self downloadTS];
+		else
+			[self downloadHeader];
 	}
 	else
 	{
-		if(trunc_index < [wizFile numberOfChunks])
-			[self downloadNextChunk];
+		if([dataFilename isEqualToString: @"header"])
+			[self downloadStat];
+		else if([dataFilename isEqualToString: @"stat"])
+			[self downloadWiz];
 		else
 		{
-			[tsFile closeFile];
-			[tsFile release];
-			tsFile = nil;
-			[self finishDownload];
+			if(trunc_index < [wizFile numberOfChunks])
+			{
+				if(makeTS)
+					[self downloadTSNextChunk];
+				else
+					[self downloadNextChunk];
+			}
+			else
+			{
+
+				[self finishDownload];
+			}
 		}
 	}
 }
@@ -535,8 +745,8 @@ NSLog(@"truncPath = %@", truncPath);
 {
 	[wizFile release];
 	[delegate release];
-	if(dir != nil)
-		[dir release];
+	if(partialDownloadDir != nil)
+		[partialDownloadDir release];
 	if(trunc != nil)
 		[trunc release];
 	if(wizDownload != nil)

@@ -26,19 +26,18 @@
 
 @interface Prefs : NSObject {
 NSUserDefaults *defaults;
-
-NSString *downloadDir;
-NSString *filenameFormat;
-BOOL connectOnStartup;
-
 }
 
 -(id)init;
 
 -(void)setDownloadDir: (NSString *)aDownloadDir;
 -(NSString *) downloadDir;
+-(void)setUseTSFormat: (BOOL) val;
+-(BOOL)useTSFormat;
 -(void)setFilenameFormat: (NSString *)aFilenameFormat;
+-(void)setFilenameFormatWiz: (NSString *)aFilenameFormat;
 -(NSString *) filenameFormat;
+-(NSString *) filenameFormatWiz;
 
 -(void)setAutoConnectOnStartup: (BOOL) val;
 -(BOOL)autoConnectOnStartup;

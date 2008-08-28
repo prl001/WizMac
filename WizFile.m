@@ -114,8 +114,15 @@
 
 -(NSString *) localFilenameFromFormatString
 {
-	NSString *formatString = [[NSUserDefaults standardUserDefaults] objectForKey: @"WizPrefFilenameFormat"];
-
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	NSString *formatString;
+	
+	if([defaults boolForKey: @"WizPrefDownloadUseTSFormat"])
+		formatString  = [defaults objectForKey: @"WizPrefFilenameFormat"];
+	else
+		formatString  = [defaults objectForKey: @"WizPrefFilenameFormatWiz"];
+		
 	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init]  autorelease];
 	
 	NSLog(@"format string = %@", formatString);
@@ -129,6 +136,7 @@
 	[formattedString setString: dateString];	
 
 	[self parseFilenameForSpecialChars: formattedString];
+	[self parseFilenameRemoveIllegalChars: formattedString];
 
 	return [NSString stringWithString: formattedString];
 }
@@ -146,6 +154,21 @@
 			case '#' : [s replaceCharactersInRange: NSMakeRange(i,1) withString: type]; i += ([type length] - 1); break;
 		}
 	}
+}
+
+-(void) parseFilenameRemoveIllegalChars: (NSMutableString *) s
+{
+	NSCharacterSet *cset = [NSCharacterSet characterSetWithCharactersInString: @"\\/:*?\"<>|"];
+	NSRange r;
+	
+	for(;;)
+	{
+		r = [s rangeOfCharacterFromSet: cset];
+		if(r.location == NSNotFound)
+			break;
+		[s replaceCharactersInRange: r withString: @"_"];
+	}
+	
 }
 
 -(NSString *) file
@@ -242,6 +265,65 @@
 	[type release];
 
 	[super dealloc];
+}
+
++(BOOL) makeTSFileUsingPath: (NSString *) path
+{
+	NSFileManager *fm = [NSFileManager defaultManager];
+	NSFileHandle *tsFile, *trunc, *chunk;
+	NSString *tsFilename = [NSString stringWithFormat: @"%@.ts", path];
+	NSString *tsFilenameTemp = [NSString stringWithFormat: @"%@.temp", tsFilename];
+	
+	unsigned int chunk_size;
+	unsigned int offset_in_file;
+	unsigned int chunk_number;
+	int i;
+	
+	if([fm fileExistsAtPath: tsFilenameTemp] == NO)
+	{
+		//make sure file exists
+		//FIXME find a better way to make an empty file.
+		FILE *f = fopen([tsFilenameTemp cString], "w");
+		if(f == NULL)
+		{
+			//[self failWithErrorTitle: @"Creating ts file" errorDesc: datafile errorCode: 0];
+			return false;
+		}
+
+		fclose(f);
+	}
+
+	tsFile = [NSFileHandle fileHandleForUpdatingAtPath: tsFilenameTemp];
+	
+	trunc = [NSFileHandle fileHandleForReadingAtPath: [NSString stringWithFormat: @"%@/trunc", path]];
+
+	NSLog(@"trunc = %@", [NSString stringWithFormat: @"%@/trunc", path]);
+		
+	NSData *trunc_data = [trunc readDataToEndOfFile];
+	int num_chunks = [trunc_data length] / 24;
+
+	[trunc closeFile];
+	
+	unsigned char *bytes = (unsigned char *)[trunc_data bytes];
+	
+	for(i=0;i < num_chunks;i++)
+	{
+		chunk_size = EndianU32_LtoN(*(UInt32 *)&bytes[i * 24 + 0x14]);
+		offset_in_file = EndianU32_LtoN(*(UInt32 *)&bytes[i * 24 + 0xC]);
+		chunk_number = EndianU16_LtoN(*(UInt16 *)&bytes[i * 24 + 0x8]);
+		
+		NSLog(@"chunk = %@", [NSString stringWithFormat: @"%@/%04d", path, chunk_number]);
+
+		chunk = [NSFileHandle fileHandleForReadingAtPath: [NSString stringWithFormat: @"%@/%04d", path, chunk_number]];
+		[chunk seekToFileOffset: offset_in_file];
+		[tsFile writeData: [chunk readDataOfLength: chunk_size]];
+		[chunk closeFile];
+	}
+
+	[tsFile closeFile];
+	[fm movePath: tsFilenameTemp toPath: tsFilename handler: nil];
+
+	return true;
 }
 
 

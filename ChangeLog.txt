@@ -1,3 +1,12 @@
+2008-08-28  Eric Fry <efry at users.sourceforge.net>
+	* Version 0.7
+	* Added support for downloading in wiz format. (.tvwiz)
+	* Strip dangerous chars from filename when saving. Chars replaced with '_'
+	* Added the ability to convert a file in tvwiz format into a .ts file.
+	  Just drag the tvwiz directory from the finder onto the wizmac dock icon
+	  and it will make a .ts file.
+	  Note that there is no progress dialog at the moment. I'll add that later.
+
 2008-06-28  Eric Fry <efry at users.sourceforge.net>
 	* Version 0.6
 	* Fixed download display strings when used on 10.4.x It wasn't handling %Lf

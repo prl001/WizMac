@@ -167,4 +167,11 @@
 	[spinner setHidden: true];
 }
 
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)path
+{
+  NSLog(@"Dragged file = %@", path);
+  [WizFile makeTSFileUsingPath: path];
+  return YES;
+}
+
 @end

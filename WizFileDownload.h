@@ -50,17 +50,20 @@ typedef struct
 @interface WizFileDownload : NSObject {
 
  WizFile *wizFile;
- NSString *dir, *localPath;
- NSFileHandle *tsFile;
+ NSString *partialDownloadDir, *localPath;
+ NSFileHandle *dataFile;
  
  BOOL resumeFromPartialDownload;
- 
+ BOOL makeTS;
+
  int trunc_index;
  //int num_chunks;
  unsigned long long bytesDownloaded;
  WizConnect *wizConnect;
  WizConnectDownload *wizDownload;
  NSMutableData *trunc;
+ NSMutableData *data;
+ NSString *dataFilename;
  id delegate;
  
  WizFileDownloadStatus status;
@@ -102,10 +105,17 @@ typedef struct
 -(bool) download;
 
 -(void) downloadTrunc;
--(void) downloadTS;
+-(BOOL) setupPartialDownloadDir;
+
+-(void) downloadWiz;
 -(void) downloadSelectChunk;
--(void) downloadPartialChunk: (unsigned long long) fsize;
+-(void) downloadPartialChunk: (int) chunk_number startOffset: (unsigned int) offset length: (unsigned int) length;
 -(void) downloadNextChunk;
+
+-(void) downloadTS;
+-(void) downloadTSSelectChunk;
+-(void) downloadTSPartialChunk: (unsigned long long) fsize;
+-(void) downloadTSNextChunk;
 
 -(void) finishDownload;
 -(void) cancelDownload;

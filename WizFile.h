@@ -48,6 +48,7 @@
 -(NSString *) remotePath;
 -(NSString *) localFilenameFromFormatString;
 -(void) parseFilenameForSpecialChars: (NSMutableString *) s;
+-(void) parseFilenameRemoveIllegalChars: (NSMutableString *) s;
 -(NSString *) file;
 -(NSString *) type;
 -(NSString *) svcName;
@@ -63,5 +64,7 @@
 -(NSString *) durationString;
 -(unsigned int)startTime;
 -(NSString *) startString;
+
++(BOOL) makeTSFileUsingPath: (NSString *) path;
 
 @end

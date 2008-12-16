@@ -113,8 +113,11 @@
 		{
 			if([line length] == 0) //skip empty line.
 				continue;
-
+			NSLog(@"raw line = %@",line);
 			range = [line rangeOfCharacterFromSet: [NSCharacterSet characterSetWithCharactersInString: @"|"]];
+			if(range.location == NSNotFound) //skip directories
+				continue;
+
 			s = range.location + 1;
 	
 			range = [line rangeOfCharacterFromSet: [NSCharacterSet characterSetWithCharactersInString: @"/"] options: NSBackwardsSearch];
@@ -295,7 +298,10 @@
 	{
 		return [file filesizeString];
 	}
-
+	else if ([[tableColumn identifier] isEqualToString:@"remoteDir"])
+	{
+		return [file remoteDir];
+	}
 	return nil;
 }
 

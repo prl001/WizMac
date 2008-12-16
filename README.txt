@@ -1,5 +1,5 @@
 
-WizMac Version 0.5 20080624
+WizMac Version 0.8 20081216
 ------------------
 
 Copyright 2008 Eric Fry

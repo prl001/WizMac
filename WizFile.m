@@ -54,6 +54,12 @@
 	file = [filename substringWithRange: range];
 	[file retain];
 
+	range.length = range.location - 1;
+	range.location = 0;
+
+	dir = [filename substringWithRange: range];
+	[dir retain];
+
 	NSLog(@"Loading WizFile: %@", filename);
 	[self loadHeader: header];
 	[self loadTrunc: trunc];
@@ -110,6 +116,13 @@
 -(NSString *) remotePath
 {
 	return filename;
+}
+
+//FIXME we need to rename this.
+//this is the directory on the wiz eg "idehdd/Recordings"
+-(NSString *) remoteDir
+{
+	return dir;
 }
 
 -(NSString *) localFilenameFromFormatString

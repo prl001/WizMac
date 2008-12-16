@@ -46,6 +46,7 @@
 
 -(WizConnect *) wizConnect;
 -(NSString *) remotePath;
+-(NSString *) remoteDir;
 -(NSString *) localFilenameFromFormatString;
 -(void) parseFilenameForSpecialChars: (NSMutableString *) s;
 -(void) parseFilenameRemoveIllegalChars: (NSMutableString *) s;

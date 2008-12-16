@@ -1,3 +1,8 @@
+2008-12-16  Eric Fry <efry at users.sourceforge.net>
+	* Version 0.8
+	* Added wiz directory support.
+	* Fixed crash on .280 firmware
+ 
 2008-08-28  Eric Fry <efry at users.sourceforge.net>
 	* Version 0.7
 	* Added support for downloading in wiz format. (.tvwiz)

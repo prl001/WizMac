@@ -115,7 +115,7 @@
 				continue;
 			NSLog(@"raw line = %@",line);
 			range = [line rangeOfCharacterFromSet: [NSCharacterSet characterSetWithCharactersInString: @"|"]];
-			if(range.location == NSNotFound) //skip directories
+			if(range.location == NSNotFound) //skip contents dir
 				continue;
 
 			s = range.location + 1;
@@ -126,14 +126,24 @@
 			range.location = s;
 			range.length = e - s;
 
-			line = [line substringWithRange: range];
 			
-			[filenames addObject: line];
-
-			curLoadIndex = 0;
-
+			line = [line substringWithRange: range];
+			//we only handle wiz files at the moment.
+			range = [line rangeOfString: @".tvwiz" options: NSBackwardsSearch];
+			if(range.location != NSNotFound)
+				[filenames addObject: line];
+			else
+			{
+				range = [line rangeOfString: @".radwiz" options: NSBackwardsSearch];
+				if(range.location != NSNotFound)
+					[filenames addObject: line];
+				else
+					NSLog(@"dropping %@", line);
+			}
 			NSLog(@"loc = %d, %d %@",s, e, line);
 		}
+
+		curLoadIndex = 0;
 		[self loadNextWizFile];
 	}
 	else

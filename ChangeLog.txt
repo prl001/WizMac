@@ -1,3 +1,7 @@
+2009-03-21  Eric Fry <efry at users.sourceforge.net>
+	* Version 0.8a
+	* Fixed crash when non wiz files are present in the index.txt
+
 2008-12-16  Eric Fry <efry at users.sourceforge.net>
 	* Version 0.8
 	* Added wiz directory support.
